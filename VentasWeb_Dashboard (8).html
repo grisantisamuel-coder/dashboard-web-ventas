@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cuadro · Canal Web · Sep 2025 – May 2026 · Grand Plaza</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+/* ─── TOKENS ─── */
+:root{
+  --nv:#071526;--nv2:#0f2340;--nv3:#163258;
+  --ac:#3b82f6;--a2:#60a5fa;
+  --bg:#eaeff6;--sf:#fff;--s2:#f4f7fb;
+  --bd:#cfd9e8;--b2:#b0c2d8;
+  --tx:#0b1d30;--tx2:#2e4a65;--tx3:#6080a0;
+  --ok:#059669;--okb:#ecfdf5;
+  --cr:#dc2626;--crb:#fef2f2;
+  --ex:#d97706;--exb:#fffbeb;
+  --A:#0d9488;--Abg:#f0fdfa;--Ab:#5eead4;
+  --r:10px;--gold:#f59e0b;
+  --web:#7c3aed;--web2:#a78bfa;--webbg:#f5f3ff;
+}
+[data-theme="dark"]{
+  --bg:#0a0f1a;--sf:#111827;--s2:#1a2233;
+  --bd:#1e3050;--b2:#253a5a;
+  --tx:#e2eaf6;--tx2:#a0b8d8;--tx3:#5a7a9a;
+  --nv:#050c1a;--nv2:#080f20;--nv3:#0d1830;
+  --webbg:#1e1040;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--tx);font-size:13px;line-height:1.5;transition:background .3s,color .3s}
+
+/* HEADER */
+.hdr{background:var(--nv);padding:0 26px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;height:58px;border-bottom:1px solid rgba(255,255,255,.06)}
+.hdr-l{display:flex;align-items:center;gap:12px}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,var(--web),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:9px;color:#fff;letter-spacing:-.2px;text-align:center;line-height:1.2;flex-shrink:0}
+.ht{font-size:14px;font-weight:700;color:#fff;letter-spacing:-.4px}
+.hs{font-size:9.5px;color:#5080a0;margin-top:1px}
+.hright{display:flex;align-items:center;gap:10px}
+.hchip{font-size:10px;color:#7090b0;border:1px solid #1e3a5f;border-radius:20px;padding:3px 11px;white-space:nowrap}
+.theme-btn{background:#1a2f4a;border:1px solid #1e3a5f;color:#8ab0d0;border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;font-family:'Sora',sans-serif;display:flex;align-items:center;gap:5px;transition:all .15s}
+.theme-btn:hover{background:#253a5a;color:#fff}
+
+/* TABS */
+.tabs{background:var(--nv2);border-bottom:1px solid #193358;display:flex;position:sticky;top:58px;z-index:299}
+.tab{padding:13px 26px;font-size:12px;font-weight:600;color:#6090b0;cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;user-select:none;display:flex;align-items:center;gap:7px}
+.tab:hover{color:#c0d8f0}
+.tab.on{color:#fff;border-bottom-color:var(--gold)}
+.tab-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* PAGE */
+.pg{padding:18px 24px;max-width:1500px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
+
+/* KPI */
+.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px;margin-bottom:16px}
+.kc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:13px 14px;transition:border-color .2s}
+.kc.gold{border-left:3px solid var(--gold)}
+.kc.gr{border-left:3px solid var(--A)}
+.kc.bl{border-left:3px solid var(--ac)}
+.kc.pu{border-left:3px solid var(--web)}
+.kl{font-size:9px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.kv{font-size:21px;font-weight:700;letter-spacing:-1px;line-height:1}
+.ks{font-size:9px;color:var(--tx3);margin-top:3px}
+
+/* SECTION HEADER */
+.sh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.st{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.sc2{font-size:10.5px;color:var(--tx3)}
+
+/* CHART CARD */
+.cc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.ct{font-size:12px;font-weight:600;margin-bottom:2px}
+.css{font-size:9.5px;color:var(--tx3);margin-bottom:13px}
+
+/* FILTER BAR */
+.fbar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--bd);background:var(--s2);flex-wrap:wrap;border-radius:var(--r) var(--r) 0 0}
+.fi{flex:1;min-width:180px;padding:7px 10px;border:1px solid var(--b2);border-radius:6px;font-family:'Sora',sans-serif;font-size:12px;color:var(--tx);background:var(--sf);outline:none;transition:border-color .15s}
+.fi:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+.fs{padding:7px 10px;border:1px solid var(--b2);border-radius:6px;font-family:'Sora',sans-serif;font-size:11.5px;color:var(--tx);background:var(--sf);outline:none;cursor:pointer}
+.fc{font-size:10px;color:var(--tx3);white-space:nowrap;margin-left:auto}
+.fbtn{padding:6px 14px;border-radius:6px;border:1px solid var(--web);color:var(--web);background:transparent;font-family:'Sora',sans-serif;font-size:11px;cursor:pointer;font-weight:600;transition:all .15s}
+.fbtn:hover{background:var(--web);color:#fff}
+
+/* MONTH MULTI SELECT */
+.month-pills{display:flex;flex-wrap:wrap;gap:5px;padding:10px 14px;border-bottom:1px solid var(--bd);background:var(--s2)}
+.mpill{padding:4px 11px;border-radius:16px;border:1.5px solid var(--bd);font-size:11px;font-weight:600;cursor:pointer;user-select:none;transition:all .14s;color:var(--tx3);background:var(--sf)}
+.mpill:hover{border-color:var(--web);color:var(--web)}
+.mpill.on{background:var(--web);border-color:var(--web);color:#fff}
+.mpill.all.on{background:var(--gold);border-color:var(--gold);color:#fff}
+
+/* TABLE */
+.tc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.ts{overflow-y:auto;max-height:520px}
+.ts::-webkit-scrollbar{width:3px}
+.ts::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--s2);padding:8px 12px;text-align:left;font-size:9px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:2;white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{color:var(--tx)}
+th.r{text-align:right}
+td{padding:8px 12px;border-bottom:1px solid var(--bd);vertical-align:middle}
+[data-theme="dark"] td{border-bottom-color:#1a2a40}
+td.r{text-align:right}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--s2)}
+.mono{font-family:'JetBrains Mono',monospace;font-size:10px}
+
+/* RANK */
+.rank{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:9.5px;font-weight:700;flex-shrink:0}
+.r1{background:var(--gold);color:#fff}
+.r2{background:#94a3b8;color:#fff}
+.r3{background:#b87333;color:#fff}
+.rn{background:var(--s2);color:var(--tx3)}
+
+/* MINI BAR */
+.mb{display:flex;align-items:center;gap:6px}
+.mbg{flex:1;height:5px;background:#e2eaf4;border-radius:3px;min-width:50px;overflow:hidden}
+[data-theme="dark"] .mbg{background:#1a2a40}
+.mbl{height:100%;border-radius:3px;transition:width .4s}
+.mbv{font-size:10.5px;color:var(--tx3);min-width:34px;text-align:right}
+
+/* DRILLDOWN */
+.dr-btn{background:none;border:1px solid var(--bd);cursor:pointer;color:var(--tx3);font-size:9.5px;font-weight:600;padding:2px 9px;border-radius:4px;font-family:'Sora',sans-serif;display:inline-flex;align-items:center;gap:3px;transition:all .12s;white-space:nowrap}
+.dr-btn:hover{background:var(--webbg);color:var(--web);border-color:var(--web2)}
+.dr-btn.on{background:var(--nv3);color:#a0c8e8;border-color:var(--nv3)}
+.dr-row{display:none}
+.dr-row.on{display:table-row}
+.dr-cell{padding:0!important;border-bottom:2px solid var(--web)!important}
+.dr-inner{padding:10px 14px;background:var(--webbg)}
+.dr-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.dr-tbl th{background:rgba(124,58,237,.08);padding:5px 10px;font-size:8.5px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bd);position:static;white-space:nowrap;cursor:default}
+.dr-tbl th.r{text-align:right}
+.dr-tbl td{padding:6px 10px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.dr-tbl td.r{text-align:right}
+.dr-tbl tr:last-child td{border-bottom:none}
+.dr-tbl tr:hover td{background:rgba(124,58,237,.06)}
+.dr-sc{max-height:260px;overflow-y:auto}
+.dr-sc::-webkit-scrollbar{width:3px}
+.dr-sc::-webkit-scrollbar-thumb{background:var(--web2)}
+
+/* GENERO BADGE */
+.gbadge{display:inline-flex;gap:4px;flex-wrap:wrap}
+.gb{font-size:8.5px;font-weight:600;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.gb.cab{background:#dbeafe;color:#1d4ed8}
+.gb.dam{background:#fce7f3;color:#be185d}
+.gb.kid{background:#d1fae5;color:#065f46}
+[data-theme="dark"] .gb.cab{background:#1e3060;color:#93c5fd}
+[data-theme="dark"] .gb.dam{background:#3a1040;color:#f0abfc}
+[data-theme="dark"] .gb.kid{background:#064030;color:#6ee7b7}
+
+/* COLOR DOT */
+.cdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;border:1px solid rgba(0,0,0,.1);flex-shrink:0}
+
+/* STOCK TABLE */
+.stock-level{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600}
+.sl-min{color:var(--ex)}
+.sl-max{color:var(--ok)}
+.sl-arrow{color:var(--tx3);font-size:10px}
+.trend-bar{display:flex;align-items:flex-end;gap:2px;height:28px}
+.tb-bar{width:7px;border-radius:2px 2px 0 0;background:var(--ac);opacity:.7;transition:opacity .2s;min-height:2px}
+.tb-bar:hover{opacity:1}
+
+/* SORT ARROW */
+th .sarr{opacity:.4;font-size:8px;margin-left:3px}
+th.sorted .sarr{opacity:1;color:var(--gold)}
+
+/* ACTIVE CHIP */
+.active-chip{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--nv2);border-radius:var(--r);margin-bottom:12px;font-size:11px;color:#a0c8e8;border:1px solid #1e3a60}
+.active-chip strong{color:#fff}
+.chip-x{cursor:pointer;color:#6090b0;font-size:14px;margin-left:4px;padding:0 4px;border-radius:3px}
+.chip-x:hover{color:#f87171}
+
+/* INFOBAR */
+.infobar{background:var(--nv2);border-radius:var(--r);padding:9px 14px;margin-bottom:12px;font-size:11px;color:#8aaccf;border:1px solid #1e3a60;line-height:1.6}
+
+.foot{text-align:center;padding:14px;color:var(--tx3);font-size:9.5px;border-top:1px solid var(--bd);margin-top:20px}
+
+@media(max-width:900px){
+  .pg{padding:10px}
+  .hdr{padding:0 14px}
+  .hdr .hs,.hchip{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="logo">GP<br>WEB</div>
+    <div>
+      <div class="ht">Cuadro · Canal Web · Sep 2025 – May 2026</div>
+      <div class="hs">Grand Plaza · Ventas Web</div>
+    </div>
+  </div>
+  <div class="hright">
+    <div class="hchip" id="hrange">Ago 2025 – May 2026 · 10 meses</div>
+    <button class="theme-btn" onclick="toggleTheme()" id="thbtn">🌙 Oscuro</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" onclick="goTab('ventas',this)"><span class="tab-dot" style="background:var(--gold)"></span>📈 Ventas Web</div>
+  <div class="tab" onclick="goTab('stock',this)"><span class="tab-dot" style="background:var(--ok)"></span>📦 Stock Sugerido Web</div>
+</div>
+
+<div class="pg">
+
+<!-- ═══ TAB: VENTAS ═══ -->
+<div id="sec-ventas" class="sec on">
+
+  <!-- KPIs -->
+  <div class="kg" id="kpi-row">
+    <div class="kc gold"><div class="kl">Total Vendido Web</div><div class="kv" style="color:var(--gold)" id="kpi-total">10,044</div><div class="ks">unidades · Ago 2025 – May 2026</div></div>
+    <div class="kc pu"><div class="kl">Modelos con Ventas</div><div class="kv" style="color:var(--web)" id="kpi-modelos">107</div><div class="ks">modelos activos en web</div></div>
+    <div class="kc gr"><div class="kl">Modelo Líder</div><div class="kv" style="color:var(--A);font-size:13px" id="kpi-lider">CUADRO BAND</div><div class="ks" id="kpi-lider-sub">3,285 und vendidas</div></div>
+    <div class="kc bl"><div class="kl">Mejor Mes</div><div class="kv" style="color:var(--ac)" id="kpi-mes">Nov 2025</div><div class="ks" id="kpi-mes-sub">3,211 und · pico web</div></div>
+    <div class="kc gold"><div class="kl">SKUs únicos</div><div class="kv" style="color:var(--gold)" id="kpi-skus">1,104</div><div class="ks">referencias web</div></div>
+  </div>
+
+  <!-- MONTH FILTER -->
+  <div class="cc" style="padding:14px 16px;margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div>
+        <div class="ct">Filtro de Período</div>
+        <div class="css" style="margin-bottom:0">Selecciona uno o varios meses para filtrar todo el dashboard</div>
+      </div>
+      <button class="fbtn" onclick="clearMonths()">Limpiar filtro</button>
+    </div>
+    <div class="month-pills" style="padding:0;border:none;background:none" id="month-pills">
+      <div class="mpill all on" data-m="ALL" onclick="toggleMonth('ALL',this)">🗓 Todos</div>
+    </div>
+  </div>
+
+  <!-- MODEL SEARCH -->
+  <div class="cc" style="padding:0;margin-bottom:14px">
+    <div class="fbar">
+      <input class="fi" type="text" placeholder="🔍 Buscar modelo..." id="srch-modelo" oninput="renderTable()">
+      <select class="fs" id="sel-genero" onchange="renderTable()">
+        <option value="ALL">Todos los géneros</option>
+        <option value="CABALLERO">Caballero</option>
+        <option value="DAMA">Dama</option>
+        <option value="KIDS">Kids</option>
+        <option value="NA">Sin género</option>
+      </select>
+      <span class="fc" id="cnt-modelos">107 modelos</span>
+    </div>
+  </div>
+
+  <!-- MONTHLY SALES CHART -->
+  <div class="cc">
+    <div class="ct">Ventas Mensuales Web</div>
+    <div class="css" id="chart-sub">Total de unidades vendidas por mes en canal web</div>
+    <div style="position:relative;height:200px"><canvas id="ch-monthly"></canvas></div>
+  </div>
+
+  <!-- MODELS TABLE -->
+  <div class="sh">
+    <div class="st">Modelos Vendidos · Web</div>
+    <div class="sc2">▶ Expande para ver SKUs · Ordena por columna</div>
+  </div>
+
+  <div class="tc">
+    <div class="ts" id="models-scroll">
+      <table id="models-table">
+        <thead>
+          <tr>
+            <th style="width:36px">#</th>
+            <th onclick="sortBy('modelo')" title="Ordenar">Modelo <span class="sarr" id="sarr-modelo">▲</span></th>
+            <th style="width:80px">SKUs</th>
+            <th>Género</th>
+            <th class="r" onclick="sortBy('total')" title="Ordenar">Total Und <span class="sarr" id="sarr-total">▲</span></th>
+            <th>Distribución Mensual</th>
+            <th>Top Color</th>
+            <th>Top Talla</th>
+            <th style="width:70px">Detalle</th>
+          </tr>
+        </thead>
+        <tbody id="models-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /sec-ventas -->
+
+<!-- ═══ TAB: STOCK ═══ -->
+<div id="sec-stock" class="sec">
+
+  <div class="infobar">
+    📦 <strong>Sugerencia de Stock Web</strong> · Basado en el promedio de ventas mensuales del canal web (Ago 2025 – May 2026).
+    <strong>Mínimo</strong> = promedio mensual de ventas | <strong>Máximo</strong> = promedio × 1.5 · Solo modelos con ventas registradas en web.
+  </div>
+
+  <div class="kg">
+    <div class="kc gold"><div class="kl">Modelos con stock sugerido</div><div class="kv" style="color:var(--gold)">107</div><div class="ks">modelos activos web</div></div>
+    <div class="kc gr"><div class="kl">Modelo mayor rotación</div><div class="kv" style="color:var(--A);font-size:12px">CUADRO BAND</div><div class="ks">~365 und/mes promedio</div></div>
+    <div class="kc bl"><div class="kl">Stock mín sugerido total</div><div class="kv" style="color:var(--ac)" id="stk-min-total">—</div><div class="ks">unidades mínimas recomendadas</div></div>
+    <div class="kc pu"><div class="kl">Stock máx sugerido total</div><div class="kv" style="color:var(--web)" id="stk-max-total">—</div><div class="ks">unidades máximas recomendadas</div></div>
+  </div>
+
+  <!-- Stock filters -->
+  <div class="tc" style="margin-bottom:14px">
+    <div class="fbar">
+      <input class="fi" type="text" placeholder="🔍 Buscar modelo..." id="srch-stock" oninput="renderStock()">
+      <select class="fs" id="sel-stock-genero" onchange="renderStock()">
+        <option value="ALL">Todos los géneros</option>
+        <option value="CABALLERO">Caballero</option>
+        <option value="DAMA">Dama</option>
+        <option value="KIDS">Kids</option>
+      </select>
+      <select class="fs" id="sel-stock-sort" onchange="renderStock()">
+        <option value="total">Mayor ventas total</option>
+        <option value="avg">Mayor promedio mensual</option>
+        <option value="modelo">Nombre A-Z</option>
+      </select>
+      <span class="fc" id="cnt-stock">107 modelos</span>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="ts" style="max-height:600px">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px">#</th>
+            <th>Modelo</th>
+            <th>Género</th>
+            <th class="r">Total Vendido</th>
+            <th class="r">Meses Activos</th>
+            <th class="r">Prom/Mes</th>
+            <th class="r">Stock Mín</th>
+            <th class="r">Stock Máx</th>
+            <th>Top Color</th>
+            <th>Top Talla</th>
+            <th>Tendencia</th>
+            <th style="width:70px">Detalle</th>
+          </tr>
+        </thead>
+        <tbody id="stock-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /sec-stock -->
+
+<div class="foot">Dashboard Ventas Web Ago 2025 – May 2026</div>
+</div><!-- /pg -->
+
+<script>
+// ─── DATA ───
+const DATA = {"months": ["agosto-2025", "septiembre-2025", "octubre-2025", "noviembre-2025", "diciembre-2025", "enero-2026", "febrero-2026", "marzo-2026", "abril-2026", "mayo-2026"], "month_labels": {"agosto-2025": "Ago 25", "septiembre-2025": "Sep 25", "octubre-2025": "Oct 25", "noviembre-2025": "Nov 25", "diciembre-2025": "Dic 25", "enero-2026": "Ene 26", "febrero-2026": "Feb 26", "marzo-2026": "Mar 26", "abril-2026": "Abr 26", "mayo-2026": "May 26"}, "monthly_sales": {"agosto-2025": 193, "septiembre-2025": 397, "octubre-2025": 1629, "noviembre-2025": 3211, "diciembre-2025": 882, "enero-2026": 1349, "febrero-2026": 405, "marzo-2026": 1039, "abril-2026": 606, "mayo-2026": 333}, "models": [{"modelo": "ACTIVE DUO", "total": 19, "skus": [{"sku": "ADUMMDA16TS", "cantidad": 4}, {"sku": "ADUMMCA16T2XL", "cantidad": 2}, {"sku": "ADUMMCA16TL", "cantidad": 2}, {"sku": "ADUMMDA16TM", "cantidad": 2}, {"sku": "ADUMMCA30TL", "cantidad": 2}, {"sku": "ADUMMCA11TM", "cantidad": 1}, {"sku": "ADUMMCA11T2XL", "cantidad": 1}, {"sku": "ADUMMCA11TL", "cantidad": 1}, {"sku": "ADUMMDA11TXL", "cantidad": 1}, {"sku": "ADUMMDA11TS", "cantidad": 1}, {"sku": "ADUMMDA16TXL", "cantidad": 1}, {"sku": "ADUMMDA30TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 12, "noviembre-2025": 4, "diciembre-2025": 0, "enero-2026": 1, "febrero-2026": 1, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 1}, "colors": {"Blanco DUO": 11, "Lavanda DUO": 5, "Gris DUO": 3}, "tallas": {"S": 6, "L": 5, "2XL": 3, "M": 3, "XL": 2}, "genero": ["DAMA", "CABALLERO"]}, {"modelo": "ADVANCE GEO DOMINIC", "total": 5, "skus": [{"sku": "GEODOCACA168TL", "cantidad": 2}, {"sku": "GEODOCACA43TL", "cantidad": 2}, {"sku": "GEODOCACA03TL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 3, "abril-2026": 0, "mayo-2026": 2}, "colors": {"Azul Cobalto": 2, "Negro": 2, "Amarillo": 1}, "tallas": {"L": 5}, "genero": ["CABALLERO"]}, {"modelo": "ADVANCE GEO MAYA", "total": 5, "skus": [{"sku": "GEOMACADA03TS", "cantidad": 2}, {"sku": "GEOMACADA03TXS", "cantidad": 1}, {"sku": "GEOMACADA168TS", "cantidad": 1}, {"sku": "GEOMACADA43TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 3, "mayo-2026": 2}, "colors": {"Amarillo": 3, "Azul Cobalto": 1, "Negro": 1}, "tallas": {"S": 4, "XS": 1}, "genero": ["DAMA"]}, {"modelo": "ANDRE ORIGINAL", "total": 21, "skus": [{"sku": "ANDMIDA04TL", "cantidad": 6}, {"sku": "ANDMIDA04TS", "cantidad": 6}, {"sku": "ANDMIDA12TM", "cantidad": 2}, {"sku": "ANDMIDA05TM", "cantidad": 1}, {"sku": "ANDMIDA12TL", "cantidad": 1}, {"sku": "ANDMIDA16TM", "cantidad": 1}, {"sku": "ANDMIDA43TM", "cantidad": 1}, {"sku": "ANDMIDA48TM", "cantidad": 1}, {"sku": "ANDMIDA50TM", "cantidad": 1}, {"sku": "ANDMIDA66TM", "cantidad": 1}], "monthly": {"agosto-2025": 1, "septiembre-2025": 0, "octubre-2025": 7, "noviembre-2025": 13, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Amarillo Neón": 12, "Azul Marino": 3, "Amarillo Pastel": 1, "Blanco": 1, "Negro": 1, "Púrpura": 1, "Rojo": 1, "Verde Militar": 1}, "tallas": {"M": 8, "L": 7, "S": 6}, "genero": ["DAMA"]}, {"modelo": "ANDRE SPORT", "total": 2, "skus": [{"sku": "ANDSPDA13TXS", "cantidad": 1}, {"sku": "ANDSPDA16TL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 2, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Azul Rey": 1, "Blanco": 1}, "tallas": {"L": 1, "XS": 1}, "genero": ["DAMA"]}, {"modelo": "ANKLE SOCKS", "total": 8, "skus": [{"sku": "ANKCA43TU", "cantidad": 5}, {"sku": "ANKDA43TU", "cantidad": 3}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 3, "febrero-2026": 0, "marzo-2026": 3, "abril-2026": 0, "mayo-2026": 2}, "colors": {"Negro": 8}, "tallas": {}, "genero": []}, {"modelo": "BANDANA PET", "total": 11, "skus": [{"sku": "PETMIPE43TXL", "cantidad": 2}, {"sku": "PETMIPE01TM", "cantidad": 1}, {"sku": "PETMIPE13TM", "cantidad": 1}, {"sku": "PETMIPE16TS", "cantidad": 1}, {"sku": "PETMIPE24TS", "cantidad": 1}, {"sku": "PETMIPE24TM", "cantidad": 1}, {"sku": "PETMIPE28TM", "cantidad": 1}, {"sku": "PETMIPE34TS", "cantidad": 1}, {"sku": "PETMIPE50TL", "cantidad": 1}, {"sku": "PETMIPE50TXL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 5, "diciembre-2025": 3, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 0, "mayo-2026": 1}, "colors": {"Coral Neón": 2, "Rojo": 2, "Negro": 2, "Aguamarina": 1, "Blanco": 1, "Azul Rey": 1, "Lila": 1, "Fucsia": 1}, "tallas": {"M": 4, "S": 3, "XL": 3, "L": 1}, "genero": []}, {"modelo": "BASIC LINE CROP TEE", "total": 30, "skus": [{"sku": "BACCCDA38TM", "cantidad": 6}, {"sku": "BACCCDA158TS", "cantidad": 5}, {"sku": "BACCCDA43TM", "cantidad": 4}, {"sku": "BACCCDA158TM", "cantidad": 3}, {"sku": "BACCCDA43TS", "cantidad": 3}, {"sku": "BACCCDA38TS", "cantidad": 2}, {"sku": "BACCCDA43TXS", "cantidad": 2}, {"sku": "BACCCDA158TL", "cantidad": 1}, {"sku": "BACCCDA158TXS", "cantidad": 1}, {"sku": "BACCCDA38TL", "cantidad": 1}, {"sku": "BACCCDA38TXS", "cantidad": 1}, {"sku": "BACCCDA43TL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 5, "noviembre-2025": 0, "diciembre-2025": 8, "enero-2026": 4, "febrero-2026": 1, "marzo-2026": 4, "abril-2026": 1, "mayo-2026": 7}, "colors": {"Black": 10, "Ivory": 10, "Peanut": 10}, "tallas": {"M": 13, "S": 10, "XS": 4, "L": 3}, "genero": ["DAMA"]}, {"modelo": "BASIC LINE OVERSIZED", "total": 18, "skus": [{"sku": "BAOCCCA158TL", "cantidad": 5}, {"sku": "BAOCCCA43TL", "cantidad": 4}, {"sku": "BAOCCCA38TL", "cantidad": 2}, {"sku": "BAOCCCA158TM", "cantidad": 2}, {"sku": "BAOCCCA38TS", "cantidad": 2}, {"sku": "BAOCCCA158TS", "cantidad": 1}, {"sku": "BAOCCCA38TM", "cantidad": 1}, {"sku": "BAOCCCA43TM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 4, "enero-2026": 10, "febrero-2026": 1, "marzo-2026": 3, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Ivory": 8, "Black": 5, "Peanut": 5}, "tallas": {"L": 11, "M": 4, "S": 3}, "genero": ["CABALLERO"]}, {"modelo": "BASIC LINE PANT", "total": 18, "skus": [{"sku": "BAPCCDA43TM", "cantidad": 5}, {"sku": "BAPCCDA184TM", "cantidad": 4}, {"sku": "BAPCCDA43TXS", "cantidad": 4}, {"sku": "BAPCCDA43TL", "cantidad": 2}, {"sku": "BAPCCDA43TS", "cantidad": 2}, {"sku": "BAPCCDA184TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 1, "diciembre-2025": 7, "enero-2026": 3, "febrero-2026": 0, "marzo-2026": 2, "abril-2026": 1, "mayo-2026": 1}, "colors": {"Black": 13, "Peanut": 5}, "tallas": {"M": 9, "XS": 4, "S": 3, "L": 2}, "genero": ["DAMA"]}, {"modelo": "BASIC LINE SHORT", "total": 10, "skus": [{"sku": "BASCCDA38TM", "cantidad": 3}, {"sku": "BASCCDA43TS", "cantidad": 2}, {"sku": "BASCCDA38TL", "cantidad": 1}, {"sku": "BASCCDA38TS", "cantidad": 1}, {"sku": "BASCCDA38TXS", "cantidad": 1}, {"sku": "BASCCDA43TL", "cantidad": 1}, {"sku": "BASCCDA43TM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 4, "noviembre-2025": 0, "diciembre-2025": 3, "enero-2026": 2, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Peanut": 6, "Black": 4}, "tallas": {"M": 4, "S": 3, "L": 2, "XS": 1}, "genero": ["DAMA"]}, {"modelo": "BUCKET HAT", "total": 6, "skus": [{"sku": "BUC69EQ", "cantidad": 3}, {"sku": "BUC01EQ", "cantidad": 2}, {"sku": "BUC34EQ", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 2, "noviembre-2025": 0, "diciembre-2025": 2, "enero-2026": 2, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Verde Pino": 3, "Aguamarina": 2, "Lila": 1}, "tallas": {}, "genero": []}, {"modelo": "BUCKET HAT ESTAMPADO", "total": 22, "skus": [{"sku": "BUC127EQ", "cantidad": 8}, {"sku": "BUC126EQ", "cantidad": 7}, {"sku": "BUC124EQ", "cantidad": 5}, {"sku": "BUC107EQ", "cantidad": 1}, {"sku": "BUC141EQ", "cantidad": 1}], "monthly": {"agosto-2025": 1, "septiembre-2025": 4, "octubre-2025": 7, "noviembre-2025": 1, "diciembre-2025": 5, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 2, "mayo-2026": 0}, "colors": {"Oceano": 8, "Retro": 7, "Bitacora": 5, "Lago": 1, "Honey": 1}, "tallas": {}, "genero": []}, {"modelo": "CAMO CAP", "total": 2, "skus": [{"sku": "CAP12CM", "cantidad": 1}, {"sku": "CAP66CM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 1, "febrero-2026": 1, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Azul Marino": 1, "Verde Militar": 1}, "tallas": {}, "genero": []}, {"modelo": "CAVAPACK 35L", "total": 2, "skus": [{"sku": "CAVAP15135L", "cantidad": 1}, {"sku": "CAVAP4335L", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 2}, "colors": {"Azul": 1, "Negro": 1}, "tallas": {}, "genero": []}, {"modelo": "CITYBAG", "total": 8, "skus": [{"sku": "CIT12CIB", "cantidad": 6}, {"sku": "CIT152CIB", "cantidad": 1}, {"sku": "CIT70CIB", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 8}, "colors": {"Azul Marino": 6, "Verde": 1, "Vinotinto": 1}, "tallas": {}, "genero": []}, {"modelo": "CLASICA ADVANCE", "total": 2, "skus": [{"sku": "CLADFCA151TM", "cantidad": 1}, {"sku": "CLADFCA70TL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Azul": 1, "Vinotinto": 1}, "tallas": {"L": 1, "M": 1}, "genero": ["CABALLERO"]}, {"modelo": "CLASICA ALGODON STRETCH", "total": 66, "skus": [{"sku": "CLASTDA16TS", "cantidad": 12}, {"sku": "CLASTCA43TM", "cantidad": 11}, {"sku": "CLASTDA43TM", "cantidad": 9}, {"sku": "CLASTDA43TS", "cantidad": 7}, {"sku": "CLASTDA16TM", "cantidad": 5}, {"sku": "CLASTCA16TL", "cantidad": 4}, {"sku": "CLASTDA43TL", "cantidad": 3}, {"sku": "CLASTCA43TL", "cantidad": 3}, {"sku": "CLASTDA43TXL", "cantidad": 2}, {"sku": "CLASTDA16TXS", "cantidad": 2}, {"sku": "CLASTCA16TS", "cantidad": 2}, {"sku": "CLASTCA43TS", "cantidad": 2}, {"sku": "CLASTCA43TXL", "cantidad": 1}, {"sku": "CLASTCA43T2XL", "cantidad": 1}, {"sku": "CLASTDA16TXL", "cantidad": 1}, {"sku": "CLASTKI16T1", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 43, "noviembre-2025": 0, "diciembre-2025": 10, "enero-2026": 0, "febrero-2026": 13, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 39, "Blanco": 27}, "tallas": {"M": 25, "S": 23, "L": 10, "XL": 4, "XS": 2, "2XL": 1, "1": 1}, "genero": ["DAMA", "CABALLERO", "KIDS"]}, {"modelo": "CLASICA DAILY", "total": 1, "skus": [{"sku": "DACSTDA16TM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 1, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Blanco": 1}, "tallas": {"M": 1}, "genero": ["DAMA"]}, {"modelo": "CLASICA DAILY 3.0", "total": 118, "skus": [{"sku": "DAYCSTCA43TM", "cantidad": 17}, {"sku": "DAYCSTDA16TS", "cantidad": 12}, {"sku": "DAYCSTCA16TM", "cantidad": 11}, {"sku": "DAYCSTCA43TL", "cantidad": 10}, {"sku": "DAYCSTDA16TM", "cantidad": 10}, {"sku": "DAYCSTCA16TL", "cantidad": 10}, {"sku": "DAYCSTCA66TL", "cantidad": 6}, {"sku": "DAYCSTDA43TM", "cantidad": 5}, {"sku": "DAYCSTDA43TS", "cantidad": 4}, {"sku": "DAYCSTDA66TS", "cantidad": 4}, {"sku": "DAYCSTCA16TS", "cantidad": 4}, {"sku": "DAYCSTCA16TXL", "cantidad": 3}, {"sku": "DAYCSTDA66TXS", "cantidad": 3}, {"sku": "DAYCSTDA43TXS", "cantidad": 3}, {"sku": "DAYCSTCA66TM", "cantidad": 3}, {"sku": "DAYCSTCA43T2XL", "cantidad": 2}, {"sku": "DAYCSTDA16TXS", "cantidad": 2}, {"sku": "DAYCSTCA66T2XL", "cantidad": 2}, {"sku": "DAYCSTDA16TL", "cantidad": 2}, {"sku": "DAYCSTCA16T2XL", "cantidad": 1}, {"sku": "DAYCSTCA66TS", "cantidad": 1}, {"sku": "DAYCSTCA43TS", "cantidad": 1}, {"sku": "DAYCSTCA43TXL", "cantidad": 1}, {"sku": "DAYCSTDA16TXL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 4, "octubre-2025": 26, "noviembre-2025": 2, "diciembre-2025": 6, "enero-2026": 5, "febrero-2026": 0, "marzo-2026": 2, "abril-2026": 16, "mayo-2026": 57}, "colors": {"Blanco": 56, "Negro": 43, "Verde Militar": 19}, "tallas": {"M": 46, "L": 28, "S": 26, "XS": 8, "2XL": 5, "XL": 5}, "genero": ["CABALLERO", "DAMA"]}, {"modelo": "CLASICA ORIGINAL", "total": 735, "skus": [{"sku": "CLAMICA11TM", "cantidad": 72}, {"sku": "CLAMICA43TM", "cantidad": 55}, {"sku": "CLAMICA11TL", "cantidad": 50}, {"sku": "CLAMICA11TS", "cantidad": 45}, {"sku": "CLAMIDA43TM", "cantidad": 36}, {"sku": "CLAMICA43TL", "cantidad": 35}, {"sku": "CLAMICA11TXL", "cantidad": 30}, {"sku": "CLAMICA66TL", "cantidad": 30}, {"sku": "CLAMIDA43TS", "cantidad": 28}, {"sku": "CLAMICA66TM", "cantidad": 27}, {"sku": "CLAMICA70TM", "cantidad": 27}, {"sku": "CLAMICA16TM", "cantidad": 24}, {"sku": "CLAMIDA16TM", "cantidad": 18}, {"sku": "CLAMIDA66TM", "cantidad": 14}, {"sku": "CLAMICA12TL", "cantidad": 14}, {"sku": "CLAMICA12TM", "cantidad": 12}, {"sku": "CLAMICA66TXL", "cantidad": 12}, {"sku": "CLAMICA16TL", "cantidad": 11}, {"sku": "CLAMICA43TXL", "cantidad": 11}, {"sku": "CLAMICA43TS", "cantidad": 11}, {"sku": "CLAMIKI16T14", "cantidad": 10}, {"sku": "CLAMIDA16TS", "cantidad": 10}, {"sku": "CLAMIDA43TXS", "cantidad": 10}, {"sku": "CLAMICA30TM", "cantidad": 9}, {"sku": "CLAMICA30TL", "cantidad": 7}, {"sku": "CLAMIDA66TL", "cantidad": 7}, {"sku": "CLAMIDA12TS", "cantidad": 7}, {"sku": "CLAMICA04TM", "cantidad": 6}, {"sku": "CLAMICA16TS", "cantidad": 6}, {"sku": "CLAMIDA43TL", "cantidad": 6}, {"sku": "CLAMICA12T2XL", "cantidad": 5}, {"sku": "CLAMICA16TXL", "cantidad": 5}, {"sku": "CLAMIKI43T12", "cantidad": 5}, {"sku": "CLAMIDA66TS", "cantidad": 5}, {"sku": "CLAMICA11T2XL", "cantidad": 4}, {"sku": "CLAMIDA43TXL", "cantidad": 4}, {"sku": "CLAMICA13TM", "cantidad": 4}, {"sku": "CLAMICA04TL", "cantidad": 3}, {"sku": "CLAMIDA70TM", "cantidad": 3}, {"sku": "CLAMIDA16TXS", "cantidad": 3}, {"sku": "CLAMICA70TL", "cantidad": 3}, {"sku": "CLAMICA12TXL", "cantidad": 2}, {"sku": "CLAMICA12TS", "cantidad": 2}, {"sku": "CLAMICA43T2XL", "cantidad": 2}, {"sku": "CLAMICA70TS", "cantidad": 2}, {"sku": "CLAMIKI66T4", "cantidad": 2}, {"sku": "CLAMICA66T2XL", "cantidad": 2}, {"sku": "CLAMIKI43T14", "cantidad": 2}, {"sku": "CLAMICA30TS", "cantidad": 2}, {"sku": "CLAMICA16T2XL", "cantidad": 2}, {"sku": "CLAMICA04T2XL", "cantidad": 1}, {"sku": "CLAMICA13TL", "cantidad": 1}, {"sku": "CLAMICA12T3XL", "cantidad": 1}, {"sku": "CLAMICA04TXL", "cantidad": 1}, {"sku": "CLAMICA05T2XL", "cantidad": 1}, {"sku": "CLAMICA09TM", "cantidad": 1}, {"sku": "CLAMIDA13TM", "cantidad": 1}, {"sku": "CLAMIDA11TL", "cantidad": 1}, {"sku": "CLAMIDA11TXS", "cantidad": 1}, {"sku": "CLAMICA43T3XL", "cantidad": 1}, {"sku": "CLAMICA13TXL", "cantidad": 1}, {"sku": "CLAMICA50T3XL", "cantidad": 1}, {"sku": "CLAMICA70TXL", "cantidad": 1}, {"sku": "CLAMICA50TL", "cantidad": 1}, {"sku": "CLAMICA50TM", "cantidad": 1}, {"sku": "CLAMICA66TS", "cantidad": 1}, {"sku": "CLAMICA70T2XL", "cantidad": 1}, {"sku": "CLAMIDA48TM", "cantidad": 1}, {"sku": "CLAMIDA34TS", "cantidad": 1}, {"sku": "CLAMIDA39TM", "cantidad": 1}, {"sku": "CLAMIDA13TXL", "cantidad": 1}, {"sku": "CLAMIDA16TL", "cantidad": 1}, {"sku": "CLAMIDA16T2XL", "cantidad": 1}, {"sku": "CLAMIDA16TXL", "cantidad": 1}, {"sku": "CLAMIDA34TM", "cantidad": 1}, {"sku": "CLAMIKI16T6", "cantidad": 1}, {"sku": "CLAMIKI05T4", "cantidad": 1}, {"sku": "CLAMIDA66TXS", "cantidad": 1}, {"sku": "CLAMIKI48T10", "cantidad": 1}, {"sku": "CLAMIKI66T1", "cantidad": 1}, {"sku": "CLAMIKI66T10", "cantidad": 1}, {"sku": "CLAMIKI66T14", "cantidad": 1}, {"sku": "CLAMIKI66T2", "cantidad": 1}], "monthly": {"agosto-2025": 2, "septiembre-2025": 57, "octubre-2025": 165, "noviembre-2025": 121, "diciembre-2025": 57, "enero-2026": 11, "febrero-2026": 1, "marzo-2026": 220, "abril-2026": 47, "mayo-2026": 54}, "colors": {"Negro": 206, "Azul Lavanda": 203, "Verde Militar": 105, "Blanco": 93, "Azul Marino": 43, "Vinotinto": 37, "Gris Claro": 18, "Amarillo Neón": 11, "Azul Rey": 8, "Rojo": 3, "Amarillo Pastel": 2, "Púrpura": 2, "Lila": 2, "Azul Cielo": 1, "Morado": 1}, "tallas": {"M": 313, "L": 170, "S": 120, "XL": 69, "2XL": 19, "XS": 15, "14": 13, "12": 5, "4": 3, "3XL": 3, "10": 2, "1": 1, "2": 1, "6": 1}, "genero": ["KIDS", "DAMA", "CABALLERO"]}, {"modelo": "CLASICA PADEL SPORT", "total": 2, "skus": [{"sku": "PCLMECA43TM", "cantidad": 1}, {"sku": "PCLMECA43TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 2, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 2}, "tallas": {"M": 1, "S": 1}, "genero": ["CABALLERO"]}, {"modelo": "CLASICA SPORT", "total": 40, "skus": [{"sku": "CLAMECA16TM", "cantidad": 4}, {"sku": "CLAMECA13TM", "cantidad": 4}, {"sku": "CLAMECA13TL", "cantidad": 3}, {"sku": "CLAMECA13T2XL", "cantidad": 3}, {"sku": "CLAMECA16TL", "cantidad": 3}, {"sku": "CLAMECA16T2XL", "cantidad": 3}, {"sku": "CLAMECA30TM", "cantidad": 3}, {"sku": "CLAMECA16TS", "cantidad": 2}, {"sku": "CLAMECA43T2XL", "cantidad": 2}, {"sku": "CLAMECA43TS", "cantidad": 2}, {"sku": "CLAMECA43TXL", "cantidad": 2}, {"sku": "CLAMEKI30T14", "cantidad": 2}, {"sku": "CLAMECA43TM", "cantidad": 2}, {"sku": "CLAMECA13TXL", "cantidad": 1}, {"sku": "CLAMECA30T2XL", "cantidad": 1}, {"sku": "CLAMECA16T3XL", "cantidad": 1}, {"sku": "CLAMECA30TXL", "cantidad": 1}, {"sku": "CLAMECA30TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 17, "noviembre-2025": 0, "diciembre-2025": 4, "enero-2026": 2, "febrero-2026": 2, "marzo-2026": 2, "abril-2026": 12, "mayo-2026": 1}, "colors": {"Blanco": 13, "Azul Mazari": 11, "Gris Claro": 8, "Negro": 8}, "tallas": {"M": 13, "2XL": 9, "L": 6, "S": 5, "XL": 4, "14": 2, "3XL": 1}, "genero": ["CABALLERO", "KIDS"]}, {"modelo": "CLASSIC BACKPACK", "total": 20, "skus": [{"sku": "CLA43CB", "cantidad": 6}, {"sku": "CLA31CB", "cantidad": 5}, {"sku": "CLA66CB", "cantidad": 5}, {"sku": "CLA12CB", "cantidad": 4}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 13, "noviembre-2025": 1, "diciembre-2025": 4, "enero-2026": 1, "febrero-2026": 1, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 6, "Gris Oscuro": 5, "Verde Militar": 5, "Azul Marino": 4}, "tallas": {}, "genero": []}, {"modelo": "CLASSIC POLO", "total": 45, "skus": [{"sku": "POLPLCA12TL", "cantidad": 6}, {"sku": "POLPLCA14TM", "cantidad": 6}, {"sku": "POLPLCA12TM", "cantidad": 5}, {"sku": "POLPLCA33TL", "cantidad": 4}, {"sku": "POLPLCA16TL", "cantidad": 3}, {"sku": "POLPLCA30TL", "cantidad": 3}, {"sku": "POLPLCA33TM", "cantidad": 3}, {"sku": "POLPLCA16TM", "cantidad": 2}, {"sku": "POLPLCA14TXL", "cantidad": 2}, {"sku": "POLPLCA33TXL", "cantidad": 2}, {"sku": "POLPLCA50TL", "cantidad": 2}, {"sku": "POLPLCA30TM", "cantidad": 2}, {"sku": "POLPLCA14TL", "cantidad": 1}, {"sku": "POLPLCA16TS", "cantidad": 1}, {"sku": "POLPLCA16T2XL", "cantidad": 1}, {"sku": "POLPLCA33T2XL", "cantidad": 1}, {"sku": "POLPLCA30TXL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 8, "octubre-2025": 15, "noviembre-2025": 1, "diciembre-2025": 17, "enero-2026": 3, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Azul Marino": 11, "Beige": 10, "Azul Turquesa": 9, "Blanco": 7, "Gris Claro": 6, "Rojo": 2}, "tallas": {"L": 19, "M": 18, "XL": 5, "2XL": 2, "S": 1}, "genero": ["CABALLERO"]}, {"modelo": "CLÁSICA SPORT", "total": 13, "skus": [{"sku": "CLAMEDA16TS", "cantidad": 3}, {"sku": "CLAMEDA30TXS", "cantidad": 3}, {"sku": "CLAMEDA43TXS", "cantidad": 2}, {"sku": "CLAMEDA13TM", "cantidad": 1}, {"sku": "CLAMEDA16TXS", "cantidad": 1}, {"sku": "CLAMEDA16TM", "cantidad": 1}, {"sku": "CLAMEDA30TS", "cantidad": 1}, {"sku": "CLAMEDA43TM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 3, "abril-2026": 6, "mayo-2026": 1}, "colors": {"Blanco": 5, "Gris Claro": 4, "Negro": 3, "Azul Mazari": 1}, "tallas": {"XS": 6, "S": 4, "M": 3}, "genero": ["DAMA"]}, {"modelo": "CREW SOCKS", "total": 25, "skus": [{"sku": "CREDA16TU", "cantidad": 7}, {"sku": "CREDA43TU", "cantidad": 7}, {"sku": "CRECA16TU", "cantidad": 4}, {"sku": "CREKI43TU", "cantidad": 4}, {"sku": "CRECA43TU", "cantidad": 3}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 4, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 4, "febrero-2026": 0, "marzo-2026": 10, "abril-2026": 1, "mayo-2026": 6}, "colors": {"Negro": 14, "Blanco": 11}, "tallas": {}, "genero": []}, {"modelo": "CUADRO BAND", "total": 3285, "skus": [{"sku": "BAN13EQ", "cantidad": 1102}, {"sku": "BAN43EQ", "cantidad": 425}, {"sku": "BAN16EQ", "cantidad": 310}, {"sku": "BAN42EQ", "cantidad": 306}, {"sku": "BAN133EQ", "cantidad": 303}, {"sku": "BAN134EQ", "cantidad": 301}, {"sku": "BAN123EQ", "cantidad": 300}, {"sku": "BAN09EQ", "cantidad": 200}, {"sku": "BAN59EQ", "cantidad": 12}, {"sku": "BAN28EQ", "cantidad": 9}, {"sku": "BAN62EQ", "cantidad": 7}, {"sku": "BAN53EQ", "cantidad": 5}, {"sku": "BAN135EQ", "cantidad": 4}, {"sku": "BAN61EQ", "cantidad": 1}], "monthly": {"agosto-2025": 1, "septiembre-2025": 0, "octubre-2025": 20, "noviembre-2025": 2511, "diciembre-2025": 218, "enero-2026": 512, "febrero-2026": 8, "marzo-2026": 0, "abril-2026": 13, "mayo-2026": 2}, "colors": {"Azul Rey": 1102, "Negro": 425, "Blanco": 310, "Naranja": 306, "Slime": 303, "Tie Dye Mandarina": 301, "Verde Manzana": 300, "Azul Cielo": 200, "Tie Dye Aguamarina": 12, "Fucsia": 9, "Tie Dye Negro": 7, "Rosado Pastel": 5, "Tie Dye Bubbaloo": 4, "Tie Dye Naranja": 1}, "tallas": {}, "genero": []}, {"modelo": "CUADRO BAND ELASTIC", "total": 22, "skus": [{"sku": "BAN04EL", "cantidad": 6}, {"sku": "BAN28EL", "cantidad": 6}, {"sku": "BAN39EL", "cantidad": 6}, {"sku": "BAN43EL", "cantidad": 4}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 3, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 0, "mayo-2026": 18}, "colors": {"Amarillo Neón": 6, "Fucsia": 6, "Morado": 6, "Negro": 4}, "tallas": {}, "genero": []}, {"modelo": "CUADRO BAND VENEZUELA", "total": 279, "skus": [{"sku": "BANDVZLA", "cantidad": 279}], "monthly": {"agosto-2025": 1, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 13, "diciembre-2025": 100, "enero-2026": 102, "febrero-2026": 0, "marzo-2026": 30, "abril-2026": 30, "mayo-2026": 0}, "colors": {}, "tallas": {}, "genero": []}, {"modelo": "CUADRO JACKET 2.0", "total": 129, "skus": [{"sku": "JAPCA162TL", "cantidad": 17}, {"sku": "JAPDA162TM", "cantidad": 15}, {"sku": "JAPCA162TM", "cantidad": 13}, {"sku": "JAPDA162TS", "cantidad": 9}, {"sku": "JAPCA43TL", "cantidad": 7}, {"sku": "JAPCA162TXL", "cantidad": 6}, {"sku": "JAPDA162TL", "cantidad": 6}, {"sku": "JAPCA43TM", "cantidad": 5}, {"sku": "JAPCA01TL", "cantidad": 5}, {"sku": "JAPDA01TM", "cantidad": 4}, {"sku": "JAPDA16TM", "cantidad": 4}, {"sku": "JAPCA01TM", "cantidad": 4}, {"sku": "JAPCA43TXL", "cantidad": 3}, {"sku": "JAPCA16TM", "cantidad": 3}, {"sku": "JAPCA16TL", "cantidad": 3}, {"sku": "JAPDA35TM", "cantidad": 3}, {"sku": "JAPDA35TS", "cantidad": 2}, {"sku": "JAPCA16TS", "cantidad": 2}, {"sku": "JAPCA66TL", "cantidad": 2}, {"sku": "JAPCA162TS", "cantidad": 2}, {"sku": "JAPDA43TM", "cantidad": 2}, {"sku": "JAPDA16TS", "cantidad": 2}, {"sku": "JAPDA01TS", "cantidad": 2}, {"sku": "JAPCA66TM", "cantidad": 1}, {"sku": "JAPCA01TXL", "cantidad": 1}, {"sku": "JAPDA162TXL", "cantidad": 1}, {"sku": "JAPCA66TS", "cantidad": 1}, {"sku": "JAPDA16TXS", "cantidad": 1}, {"sku": "JAPDA35TXS", "cantidad": 1}, {"sku": "JAPDA43TL", "cantidad": 1}, {"sku": "JAPDA43TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 2, "enero-2026": 11, "febrero-2026": 20, "marzo-2026": 76, "abril-2026": 13, "mayo-2026": 7}, "colors": {"AZUL POLO": 69, "NEGRO": 19, "AGUAMARINA": 16, "BLANCO": 15, "MAGENTA": 6, "VERDE MILITAR": 4}, "tallas": {"M": 54, "L": 41, "S": 21, "XL": 11, "XS": 2}, "genero": ["DAMA", "CABALLERO"]}, {"modelo": "CUADRO TAG", "total": 54, "skus": [{"sku": "CUTAG81", "cantidad": 32}, {"sku": "CUTAG82", "cantidad": 6}, {"sku": "CUTAG84", "cantidad": 6}, {"sku": "CUTAG80", "cantidad": 4}, {"sku": "CUTAG85", "cantidad": 3}, {"sku": "CUTAG86", "cantidad": 3}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 7, "noviembre-2025": 12, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 30, "mayo-2026": 4}, "colors": {"Colina": 32, "Cumbre": 6, "Sendero": 6, "Peaceful": 4, "Nautico": 3, "Rutas": 3}, "tallas": {}, "genero": []}, {"modelo": "DAD CAP", "total": 13, "skus": [{"sku": "CAP38DC", "cantidad": 9}, {"sku": "CAP12DC", "cantidad": 2}, {"sku": "CAP31DC", "cantidad": 2}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 1, "diciembre-2025": 0, "enero-2026": 2, "febrero-2026": 0, "marzo-2026": 2, "abril-2026": 8, "mayo-2026": 0}, "colors": {"Marron": 9, "Azul Marino": 2, "Gris Oscuro": 2}, "tallas": {}, "genero": []}, {"modelo": "DOMINIC BIO MOVE", "total": 21, "skus": [{"sku": "DOMBFCA205TS", "cantidad": 3}, {"sku": "DOMBFCA30TM", "cantidad": 3}, {"sku": "DOMBFCA16TS", "cantidad": 2}, {"sku": "DOMBFCA205TL", "cantidad": 2}, {"sku": "DOMBFCA16TM", "cantidad": 2}, {"sku": "DOMBFCA43TS", "cantidad": 2}, {"sku": "DOMBFCA16TL", "cantidad": 1}, {"sku": "DOMBFCA16TXL", "cantidad": 1}, {"sku": "DOMBFCA205TM", "cantidad": 1}, {"sku": "DOMBFCA206TS", "cantidad": 1}, {"sku": "DOMBFCA30TS", "cantidad": 1}, {"sku": "DOMBFCA43TL", "cantidad": 1}, {"sku": "DOMBFCA43TXL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 2, "octubre-2025": 5, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 2, "febrero-2026": 6, "marzo-2026": 0, "abril-2026": 6, "mayo-2026": 0}, "colors": {"Blanco": 6, "Lima": 6, "Gris Claro": 4, "Negro": 4, "Azul Grisáceo": 1}, "tallas": {"S": 9, "M": 6, "L": 4, "XL": 2}, "genero": ["CABALLERO"]}, {"modelo": "DRY BAG 10L", "total": 28, "skus": [{"sku": "DRY4310L", "cantidad": 11}, {"sku": "DRY1310L", "cantidad": 7}, {"sku": "DRY3010L", "cantidad": 7}, {"sku": "DRY1610L", "cantidad": 2}, {"sku": "DRY2010L", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 11, "octubre-2025": 7, "noviembre-2025": 3, "diciembre-2025": 4, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 2, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 11, "Azul Rey": 7, "Gris Claro": 7, "Blanco": 2, "Camu": 1}, "tallas": {}, "genero": []}, {"modelo": "DRY BAG 30L", "total": 102, "skus": [{"sku": "DRY6630L", "cantidad": 35}, {"sku": "DRY4330L", "cantidad": 24}, {"sku": "DRY3030L", "cantidad": 14}, {"sku": "DRY1630L", "cantidad": 8}, {"sku": "DRY0330L", "cantidad": 5}, {"sku": "DRY4230L", "cantidad": 5}, {"sku": "DRY2030L", "cantidad": 5}, {"sku": "DRY5030L", "cantidad": 4}, {"sku": "DRY1330L", "cantidad": 2}], "monthly": {"agosto-2025": 13, "septiembre-2025": 6, "octubre-2025": 34, "noviembre-2025": 8, "diciembre-2025": 10, "enero-2026": 8, "febrero-2026": 9, "marzo-2026": 7, "abril-2026": 6, "mayo-2026": 1}, "colors": {"Verde Militar": 35, "Negro": 24, "Gris Claro": 14, "Blanco": 8, "Amarillo": 5, "Naranja": 5, "Camu": 5, "Rojo": 4, "Azul Rey": 2}, "tallas": {}, "genero": []}, {"modelo": "DRY BAG 5L", "total": 50, "skus": [{"sku": "DRY435L", "cantidad": 43}, {"sku": "DRY665L", "cantidad": 4}, {"sku": "DRY165L", "cantidad": 1}, {"sku": "DRY305L", "cantidad": 1}, {"sku": "DRY205L", "cantidad": 1}], "monthly": {"agosto-2025": 10, "septiembre-2025": 18, "octubre-2025": 6, "noviembre-2025": 0, "diciembre-2025": 5, "enero-2026": 3, "febrero-2026": 1, "marzo-2026": 6, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Negro": 43, "Verde Militar": 4, "Blanco": 1, "Gris Claro": 1, "Camu": 1}, "tallas": {}, "genero": []}, {"modelo": "ECO BAG", "total": 3, "skus": [{"sku": "EC173UN", "cantidad": 2}, {"sku": "EC175UN", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 2}, "colors": {"Palmeras": 2, "Daily": 1}, "tallas": {}, "genero": []}, {"modelo": "EXPLORE CAP", "total": 2, "skus": [{"sku": "CAP66EC", "cantidad": 2}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Verde Militar": 2}, "tallas": {}, "genero": []}, {"modelo": "EXPLORE PANTS", "total": 91, "skus": [{"sku": "PANNTCA43TM", "cantidad": 7}, {"sku": "PANNTCA30TL", "cantidad": 6}, {"sku": "PANNTDA30TS", "cantidad": 6}, {"sku": "PANNTDA43TXS", "cantidad": 5}, {"sku": "PANNTDA12TM", "cantidad": 4}, {"sku": "PANNTCA30TM", "cantidad": 4}, {"sku": "PANNTDA43TM", "cantidad": 4}, {"sku": "PANNTDA66TS", "cantidad": 4}, {"sku": "PANNTDA43TS", "cantidad": 4}, {"sku": "PANNTDA30TM", "cantidad": 4}, {"sku": "PANNTDA33TS", "cantidad": 4}, {"sku": "PANNTDA33TXS", "cantidad": 4}, {"sku": "PANNTDA33TM", "cantidad": 4}, {"sku": "PANNTCA31TL", "cantidad": 3}, {"sku": "PANNTDA43TL", "cantidad": 2}, {"sku": "PANNTCA66TM", "cantidad": 2}, {"sku": "PANNTCA33TL", "cantidad": 2}, {"sku": "PANNTDA66TM", "cantidad": 2}, {"sku": "PANNTCA30TXL", "cantidad": 1}, {"sku": "PANNTCA30TS", "cantidad": 1}, {"sku": "PANNTCA12TM", "cantidad": 1}, {"sku": "PANNTCA12TXL", "cantidad": 1}, {"sku": "PANNTDA33TL", "cantidad": 1}, {"sku": "PANNTDA12TS", "cantidad": 1}, {"sku": "PANNTCA43TXL", "cantidad": 1}, {"sku": "PANNTCA66TS", "cantidad": 1}, {"sku": "PANNTCA31TS", "cantidad": 1}, {"sku": "PANNTCA33TM", "cantidad": 1}, {"sku": "PANNTCA33TS", "cantidad": 1}, {"sku": "PANNTCA43TS", "cantidad": 1}, {"sku": "PANNTCA31TM", "cantidad": 1}, {"sku": "PANNTDA66TXS", "cantidad": 1}, {"sku": "PANNTKI12T10", "cantidad": 1}, {"sku": "PANNTKI31T10", "cantidad": 1}, {"sku": "PANNTKI31T12", "cantidad": 1}, {"sku": "PANNTKI33T2", "cantidad": 1}, {"sku": "PANNTKI43T10", "cantidad": 1}, {"sku": "PANNTKI66T2", "cantidad": 1}], "monthly": {"agosto-2025": 4, "septiembre-2025": 0, "octubre-2025": 26, "noviembre-2025": 9, "diciembre-2025": 13, "enero-2026": 8, "febrero-2026": 5, "marzo-2026": 14, "abril-2026": 11, "mayo-2026": 1}, "colors": {"Negro": 25, "Gris Claro": 22, "Kaki": 18, "Verde Militar": 11, "Azul Marino": 8, "Gris Oscuro": 7}, "tallas": {"M": 34, "S": 24, "L": 14, "XS": 10, "10": 3, "XL": 3, "2": 2, "12": 1}, "genero": ["DAMA", "CABALLERO", "KIDS"]}, {"modelo": "EXPLORE SHORT", "total": 13, "skus": [{"sku": "SHONTDA66TM", "cantidad": 3}, {"sku": "SHONTCA33TL", "cantidad": 2}, {"sku": "SHONTDA66TXS", "cantidad": 2}, {"sku": "SHONTCA33TS", "cantidad": 1}, {"sku": "SHONTDA12TM", "cantidad": 1}, {"sku": "SHONTDA33TL", "cantidad": 1}, {"sku": "SHONTDA30TM", "cantidad": 1}, {"sku": "SHONTDA43TXS", "cantidad": 1}, {"sku": "SHONTDA43TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 10, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 1, "marzo-2026": 2, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Verde Militar": 5, "Kaki": 4, "Negro": 2, "Azul Marino": 1, "Gris": 1}, "tallas": {"M": 5, "L": 3, "XS": 3, "S": 2}, "genero": ["DAMA", "CABALLERO"]}, {"modelo": "FALDA SARA", "total": 25, "skus": [{"sku": "SARSPDA30TM", "cantidad": 6}, {"sku": "SARSPDA30TS", "cantidad": 5}, {"sku": "SARSPDA30TXL", "cantidad": 4}, {"sku": "SARSPDA16TXS", "cantidad": 3}, {"sku": "SARSPDA12TM", "cantidad": 2}, {"sku": "SARSPDA43TM", "cantidad": 2}, {"sku": "SARSPDA16TM", "cantidad": 1}, {"sku": "SARSPDA30TXS", "cantidad": 1}, {"sku": "SARSPDA43TXS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 16, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 3, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 3, "mayo-2026": 2}, "colors": {"Gris Claro": 16, "Blanco": 4, "Negro": 3, "Azul Marino": 2}, "tallas": {"M": 11, "S": 5, "XS": 5, "XL": 4}, "genero": ["DAMA"]}, {"modelo": "FIT CAP", "total": 21, "skus": [{"sku": "CAP12FC", "cantidad": 14}, {"sku": "CAP43FC", "cantidad": 3}, {"sku": "CAP16FC", "cantidad": 2}, {"sku": "CAP67FC", "cantidad": 2}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 14, "febrero-2026": 1, "marzo-2026": 3, "abril-2026": 2, "mayo-2026": 1}, "colors": {"Azul Marino": 14, "Negro": 3, "Blanco": 2, "Verde Neon": 2}, "tallas": {}, "genero": []}, {"modelo": "FLEX COVER", "total": 7, "skus": [{"sku": "BUFMIGE43TUN", "cantidad": 6}, {"sku": "BUFMIGE16TUN", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 4, "diciembre-2025": 2, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 6, "Blanco": 1}, "tallas": {}, "genero": []}, {"modelo": "HAT", "total": 26, "skus": [{"sku": "HAT43EQ", "cantidad": 14}, {"sku": "HAT33EQ", "cantidad": 9}, {"sku": "HAT13EQ", "cantidad": 2}, {"sku": "HAT70EQ", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 4, "febrero-2026": 6, "marzo-2026": 8, "abril-2026": 5, "mayo-2026": 3}, "colors": {"Negro": 14, "Kaki": 9, "Azul Rey": 2, "Vinotinto": 1}, "tallas": {}, "genero": []}, {"modelo": "HEADBAND", "total": 44, "skus": [{"sku": "HEA103EQ", "cantidad": 32}, {"sku": "HEA73EQ", "cantidad": 6}, {"sku": "HEA75EQ", "cantidad": 6}], "monthly": {"agosto-2025": 1, "septiembre-2025": 0, "octubre-2025": 7, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 0, "febrero-2026": 1, "marzo-2026": 3, "abril-2026": 31, "mayo-2026": 0}, "colors": {"Blanco": 32, "Aguamarina": 6, "Purpura": 6}, "tallas": {}, "genero": []}, {"modelo": "HELEN BIO MOVE", "total": 7, "skus": [{"sku": "HELBFDA16TM", "cantidad": 1}, {"sku": "HELBFDA16TS", "cantidad": 1}, {"sku": "HELBFDA205TM", "cantidad": 1}, {"sku": "HELBFDA205TS", "cantidad": 1}, {"sku": "HELBFDA205TXS", "cantidad": 1}, {"sku": "HELBFDA30TS", "cantidad": 1}, {"sku": "HELBFDA43TM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 2, "marzo-2026": 1, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Lima": 3, "Blanco": 2, "Gris Claro": 1, "Negro": 1}, "tallas": {"M": 3, "S": 3, "XS": 1}, "genero": ["DAMA"]}, {"modelo": "JACKET", "total": 198, "skus": [{"sku": "JACCA43TL", "cantidad": 17}, {"sku": "JACDA43TM", "cantidad": 15}, {"sku": "JACCA43TM", "cantidad": 14}, {"sku": "JACCA66TM", "cantidad": 12}, {"sku": "JACCA33T2XL", "cantidad": 11}, {"sku": "JACCA66TL", "cantidad": 9}, {"sku": "JACDA33TM", "cantidad": 9}, {"sku": "JACCA33TXL", "cantidad": 8}, {"sku": "JACCA33TL", "cantidad": 7}, {"sku": "JACCA43TXL", "cantidad": 7}, {"sku": "JACDA66TM", "cantidad": 7}, {"sku": "JACDA33TL", "cantidad": 6}, {"sku": "JACDA43TS", "cantidad": 5}, {"sku": "JACDA66TS", "cantidad": 5}, {"sku": "JACDA01TS", "cantidad": 4}, {"sku": "JACCA66TS", "cantidad": 4}, {"sku": "JACCA33TM", "cantidad": 4}, {"sku": "JACDA01TM", "cantidad": 4}, {"sku": "JACDA43TL", "cantidad": 4}, {"sku": "JACDA43TXS", "cantidad": 4}, {"sku": "JACCA70TS", "cantidad": 3}, {"sku": "JACDA66TL", "cantidad": 2}, {"sku": "JACKI43T12", "cantidad": 2}, {"sku": "JACKI43T10", "cantidad": 2}, {"sku": "JACCA70TL", "cantidad": 2}, {"sku": "JACCA70TM", "cantidad": 2}, {"sku": "JACCA70TXL", "cantidad": 2}, {"sku": "JACKI43T4", "cantidad": 2}, {"sku": "JACDA01TXS", "cantidad": 2}, {"sku": "JACDA47TL", "cantidad": 2}, {"sku": "JACCA66TXL", "cantidad": 2}, {"sku": "JACCA12TL", "cantidad": 1}, {"sku": "JACCA14TL", "cantidad": 1}, {"sku": "JACCA12TM", "cantidad": 1}, {"sku": "JACCA66T2XL", "cantidad": 1}, {"sku": "JACCA43TS", "cantidad": 1}, {"sku": "JACCA43T2XL", "cantidad": 1}, {"sku": "JACCA33TS", "cantidad": 1}, {"sku": "JACCA14TS", "cantidad": 1}, {"sku": "JACCA14TM", "cantidad": 1}, {"sku": "JACDA34TL", "cantidad": 1}, {"sku": "JACDA33TS", "cantidad": 1}, {"sku": "JACKI01T10", "cantidad": 1}, {"sku": "JACDA66TXS", "cantidad": 1}, {"sku": "JACDA47TM", "cantidad": 1}, {"sku": "JACKI01T12", "cantidad": 1}, {"sku": "JACKI43T8", "cantidad": 1}, {"sku": "JACKI47T10", "cantidad": 1}, {"sku": "JACKI47T12", "cantidad": 1}, {"sku": "JACKI47T6", "cantidad": 1}], "monthly": {"agosto-2025": 2, "septiembre-2025": 86, "octubre-2025": 57, "noviembre-2025": 20, "diciembre-2025": 22, "enero-2026": 6, "febrero-2026": 1, "marzo-2026": 2, "abril-2026": 2, "mayo-2026": 0}, "colors": {"Negro": 75, "Kaki": 47, "Verde Militar": 43, "Aguamarina": 12, "Vinotinto": 9, "Pink": 6, "Azul Turquesa": 3, "Azul Marino": 2, "Lila": 1}, "tallas": {"M": 70, "L": 52, "S": 25, "XL": 19, "2XL": 13, "XS": 7, "10": 4, "12": 4, "4": 2, "8": 1, "6": 1}, "genero": ["CABALLERO", "DAMA", "KIDS"]}, {"modelo": "KID HAT", "total": 7, "skus": [{"sku": "KID09EQ", "cantidad": 4}, {"sku": "KID23EQ", "cantidad": 3}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 4, "abril-2026": 1, "mayo-2026": 2}, "colors": {"Azul Cielo": 4, "Coral": 3}, "tallas": {}, "genero": []}, {"modelo": "LANYARD", "total": 867, "skus": [{"sku": "LAN01EQ", "cantidad": 217}, {"sku": "LAN50EQ", "cantidad": 196}, {"sku": "LAN03EQ", "cantidad": 190}, {"sku": "LAN63EQ", "cantidad": 86}, {"sku": "LAN42EQ", "cantidad": 77}, {"sku": "LAN28EQ", "cantidad": 52}, {"sku": "LAN14EQ", "cantidad": 20}, {"sku": "LAN39EQ", "cantidad": 18}, {"sku": "LAN43EQ", "cantidad": 9}, {"sku": "LAN67EQ", "cantidad": 2}], "monthly": {"agosto-2025": 10, "septiembre-2025": 10, "octubre-2025": 204, "noviembre-2025": 187, "diciembre-2025": 105, "enero-2026": 305, "febrero-2026": 4, "marzo-2026": 22, "abril-2026": 1, "mayo-2026": 19}, "colors": {"Aguamarina": 217, "Rojo": 196, "Amarillo": 190, "Verde Agua": 86, "Naranja": 77, "Fucsia": 52, "Azul Turquesa": 20, "Morado": 18, "Negro": 9, "Verde Neon": 2}, "tallas": {}, "genero": []}, {"modelo": "LANYARD PRO", "total": 42, "skus": [{"sku": "LPR43EQ", "cantidad": 11}, {"sku": "LPR13EQ", "cantidad": 8}, {"sku": "LPR34EQ", "cantidad": 7}, {"sku": "LPR09EQ", "cantidad": 6}, {"sku": "LPR38EQ", "cantidad": 4}, {"sku": "LPR66EQ", "cantidad": 3}, {"sku": "LPR70EQ", "cantidad": 3}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 14, "noviembre-2025": 8, "diciembre-2025": 7, "enero-2026": 4, "febrero-2026": 4, "marzo-2026": 4, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Negro": 11, "Azul Rey": 8, "Lila": 7, "Azul Cielo": 6, "Marron": 4, "Verde Militar": 3, "Vinotinto": 3}, "tallas": {}, "genero": []}, {"modelo": "LARISA ORIGINAL", "total": 7, "skus": [{"sku": "LARIMJDA12TXS", "cantidad": 2}, {"sku": "LARIMJDA16TXS", "cantidad": 2}, {"sku": "LARIMJDA43TXS", "cantidad": 2}, {"sku": "LARIMJDA12TM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 7}, "colors": {"Azul Marino": 3, "Blanco": 2, "Negro": 2}, "tallas": {"XS": 6, "M": 1}, "genero": ["DAMA"]}, {"modelo": "LEGGING MOVA", "total": 7, "skus": [{"sku": "LMOFIDA43TM", "cantidad": 2}, {"sku": "LMOFIDA10TXS", "cantidad": 1}, {"sku": "LMOFIDA12TL", "cantidad": 1}, {"sku": "LMOFIDA12TXS", "cantidad": 1}, {"sku": "LMOFIDA43TS", "cantidad": 1}, {"sku": "LMOFIDA66TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 2, "febrero-2026": 1, "marzo-2026": 3, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 3, "Azul Marino": 2, "Azul Lago": 1, "Verde Militar": 1}, "tallas": {"M": 2, "S": 2, "XS": 2, "L": 1}, "genero": ["DAMA"]}, {"modelo": "LLAVERO SNAP", "total": 145, "skus": [{"sku": "SNA67EQ", "cantidad": 103}, {"sku": "SNA13EQ", "cantidad": 10}, {"sku": "SNA35EQ", "cantidad": 10}, {"sku": "SNA66EQ", "cantidad": 8}, {"sku": "SNA34EQ", "cantidad": 5}, {"sku": "SNA70EQ", "cantidad": 4}, {"sku": "SNA30EQ", "cantidad": 3}, {"sku": "SNA14EQ", "cantidad": 2}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 13, "noviembre-2025": 0, "diciembre-2025": 7, "enero-2026": 110, "febrero-2026": 3, "marzo-2026": 11, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Verde Neon": 103, "Azul Rey": 10, "Magenta": 10, "Verde Militar": 8, "Lila": 5, "Vinotinto": 4, "Gris Claro": 3, "Azul Turquesa": 2}, "tallas": {}, "genero": []}, {"modelo": "MAFE ADVANCE", "total": 4, "skus": [{"sku": "MAADFDA30TS", "cantidad": 2}, {"sku": "MAADFDA70TM", "cantidad": 1}, {"sku": "MAADFDA70TS", "cantidad": 1}], "monthly": {"agosto-2025": 1, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Gris Claro": 2, "Vinotinto": 2}, "tallas": {"S": 3, "M": 1}, "genero": ["DAMA"]}, {"modelo": "MAFE ORIGINAL", "total": 303, "skus": [{"sku": "MAFMIDA11TS", "cantidad": 102}, {"sku": "MAFMIDA11TM", "cantidad": 53}, {"sku": "MAFMIDA11TL", "cantidad": 50}, {"sku": "MAFMIDA66TS", "cantidad": 21}, {"sku": "MAFMIDA11TXL", "cantidad": 20}, {"sku": "MAFMIDA66TM", "cantidad": 18}, {"sku": "MAFMIDA70TS", "cantidad": 12}, {"sku": "MAFMIDA66TL", "cantidad": 5}, {"sku": "MAFMIDA43TS", "cantidad": 3}, {"sku": "MAFMIDA16TM", "cantidad": 3}, {"sku": "MAFMIDA16TXS", "cantidad": 3}, {"sku": "MAFMIDA16TS", "cantidad": 3}, {"sku": "MAFMIDA43TM", "cantidad": 3}, {"sku": "MAFMIDA01TM", "cantidad": 1}, {"sku": "MAFMIDA14TS", "cantidad": 1}, {"sku": "MAFMIDA16TL", "cantidad": 1}, {"sku": "MAFMIDA34TS", "cantidad": 1}, {"sku": "MAFMIDA48TL", "cantidad": 1}, {"sku": "MAFMIDA48TS", "cantidad": 1}, {"sku": "MAFMIDA66TXS", "cantidad": 1}], "monthly": {"agosto-2025": 1, "septiembre-2025": 45, "octubre-2025": 1, "noviembre-2025": 1, "diciembre-2025": 5, "enero-2026": 3, "febrero-2026": 1, "marzo-2026": 226, "abril-2026": 6, "mayo-2026": 14}, "colors": {"Azul Lavanda": 225, "Verde Militar": 45, "Vinotinto": 12, "Blanco": 10, "Negro": 6, "Púrpura": 2, "Aguamarina": 1, "Lila": 1, "Azul Turquesa": 1}, "tallas": {"S": 144, "M": 78, "L": 57, "XL": 20, "XS": 4}, "genero": ["DAMA"]}, {"modelo": "MAFE SPORT", "total": 3, "skus": [{"sku": "MAFMEDA16TL", "cantidad": 2}, {"sku": "MAFMEDA13TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Blanco": 2, "Azul Mazari": 1}, "tallas": {"L": 2, "S": 1}, "genero": ["DAMA"]}, {"modelo": "MANGA LARGA ALGODON STRETCH", "total": 1, "skus": [{"sku": "MLASTDA43TL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 1, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 1}, "tallas": {"L": 1}, "genero": ["DAMA"]}, {"modelo": "MANGA LARGA DAILY", "total": 1, "skus": [{"sku": "DAMSTKI43T14", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 1, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 1}, "tallas": {"14": 1}, "genero": ["KIDS"]}, {"modelo": "MAR ORIGINAL", "total": 938, "skus": [{"sku": "MARMIDA12TM", "cantidad": 42}, {"sku": "MARMICA12TL", "cantidad": 30}, {"sku": "MARMIDA01TS", "cantidad": 26}, {"sku": "MARMICA12TM", "cantidad": 24}, {"sku": "MARMIDA12TS", "cantidad": 24}, {"sku": "MARMIDA39TM", "cantidad": 21}, {"sku": "MARMICA01TM", "cantidad": 21}, {"sku": "MARMICA66TM", "cantidad": 20}, {"sku": "MARMICA01TS", "cantidad": 19}, {"sku": "MARMIDA13TS", "cantidad": 18}, {"sku": "MARMICA16TM", "cantidad": 16}, {"sku": "MARMICA70TM", "cantidad": 16}, {"sku": "MARMICA70TS", "cantidad": 15}, {"sku": "MARMICA43TL", "cantidad": 15}, {"sku": "MARMIDA50TS", "cantidad": 15}, {"sku": "MARMIDA66TS", "cantidad": 14}, {"sku": "MARMIDA43TXS", "cantidad": 14}, {"sku": "MARMIDA48TS", "cantidad": 14}, {"sku": "MARMICA12TS", "cantidad": 14}, {"sku": "MARMICA16TL", "cantidad": 13}, {"sku": "MARMICA39TL", "cantidad": 13}, {"sku": "MARMIDA43TS", "cantidad": 13}, {"sku": "MARMIDA16TM", "cantidad": 13}, {"sku": "MARMIDA13TM", "cantidad": 12}, {"sku": "MARMIDA28TS", "cantidad": 12}, {"sku": "MARMICA12TXL", "cantidad": 12}, {"sku": "MARMIDA34TM", "cantidad": 11}, {"sku": "MARMIDA34TS", "cantidad": 11}, {"sku": "MARMICA34TL", "cantidad": 11}, {"sku": "MARMICA34TM", "cantidad": 10}, {"sku": "MARMICA43TM", "cantidad": 10}, {"sku": "MARMIDA70TS", "cantidad": 10}, {"sku": "MARMIDA50TM", "cantidad": 10}, {"sku": "MARMIDA12TL", "cantidad": 10}, {"sku": "MARMIDA16TS", "cantidad": 9}, {"sku": "MARMIDA39TS", "cantidad": 9}, {"sku": "MARMIDA12TXS", "cantidad": 8}, {"sku": "MARMICA13TM", "cantidad": 8}, {"sku": "MARMICA13TL", "cantidad": 8}, {"sku": "MARMICA01TL", "cantidad": 8}, {"sku": "MARMICA48TS", "cantidad": 8}, {"sku": "MARMICA48TM", "cantidad": 8}, {"sku": "MARMIDA70TM", "cantidad": 8}, {"sku": "MARMIDA01TXS", "cantidad": 7}, {"sku": "MARMIDA66TM", "cantidad": 7}, {"sku": "MARMIKI50T8", "cantidad": 7}, {"sku": "MARMIDA39TL", "cantidad": 7}, {"sku": "MARMICA66TL", "cantidad": 7}, {"sku": "MARMICA70TL", "cantidad": 7}, {"sku": "MARMIDA28TXS", "cantidad": 7}, {"sku": "MARMICA50TM", "cantidad": 7}, {"sku": "MARMICA39TM", "cantidad": 7}, {"sku": "MARMICA16TXL", "cantidad": 7}, {"sku": "MARMICA11TL", "cantidad": 6}, {"sku": "MARMIDA43TM", "cantidad": 6}, {"sku": "MARMIDA48TXS", "cantidad": 6}, {"sku": "MARMICA11TXL", "cantidad": 6}, {"sku": "MARMIDA43TL", "cantidad": 5}, {"sku": "MARMIDA13TL", "cantidad": 5}, {"sku": "MARMICA48TL", "cantidad": 5}, {"sku": "MARMICA66TS", "cantidad": 5}, {"sku": "MARMICA11TM", "cantidad": 5}, {"sku": "MARMIDA50TL", "cantidad": 5}, {"sku": "MARMICA43TS", "cantidad": 5}, {"sku": "MARMICA39TXL", "cantidad": 4}, {"sku": "MARMIDA70TXS", "cantidad": 4}, {"sku": "MARMIKI12T10", "cantidad": 4}, {"sku": "MARMIDA13TXS", "cantidad": 4}, {"sku": "MARMICA50TS", "cantidad": 4}, {"sku": "MARMIDA34TXS", "cantidad": 4}, {"sku": "MARMICA43TXL", "cantidad": 3}, {"sku": "MARMICA50TL", "cantidad": 3}, {"sku": "MARMICA24TM", "cantidad": 3}, {"sku": "MARMICA30TL", "cantidad": 3}, {"sku": "MARMIKI12T4", "cantidad": 3}, {"sku": "MARMIKI43T8", "cantidad": 3}, {"sku": "MARMIDA28TM", "cantidad": 3}, {"sku": "MARMIDA12TXL", "cantidad": 3}, {"sku": "MARMIDA16TXS", "cantidad": 3}, {"sku": "MARMIDA16TL", "cantidad": 3}, {"sku": "MARMIDA11TXS", "cantidad": 3}, {"sku": "MARMIDA11TM", "cantidad": 3}, {"sku": "MARMIKI50T6", "cantidad": 3}, {"sku": "MARMIDA50TXL", "cantidad": 3}, {"sku": "MARMIKI16T6", "cantidad": 3}, {"sku": "MARMIKI43T6", "cantidad": 3}, {"sku": "MARMIKI43T14", "cantidad": 3}, {"sku": "MARMIDA70TL", "cantidad": 3}, {"sku": "MARMIKI12T12", "cantidad": 3}, {"sku": "MARMIKI12T6", "cantidad": 3}, {"sku": "MARMIDA11TS", "cantidad": 3}, {"sku": "MARMICA04TXL", "cantidad": 2}, {"sku": "MARMIDA13TXL", "cantidad": 2}, {"sku": "MARMIKI43T12", "cantidad": 2}, {"sku": "MARMIDA24TS", "cantidad": 2}, {"sku": "MARMICA70TXL", "cantidad": 2}, {"sku": "MARMICA50T2XL", "cantidad": 2}, {"sku": "MARMIDA09TXS", "cantidad": 2}, {"sku": "MARMIDA04TXS", "cantidad": 2}, {"sku": "MARMIKI13T10", "cantidad": 2}, {"sku": "MARMIDA66TXS", "cantidad": 2}, {"sku": "MARMICA30TM", "cantidad": 2}, {"sku": "MARMICA30TS", "cantidad": 2}, {"sku": "MARMICA43T2XL", "cantidad": 2}, {"sku": "MARMICA12T2XL", "cantidad": 2}, {"sku": "MARMICA13TS", "cantidad": 2}, {"sku": "MARMICA43T3XL", "cantidad": 2}, {"sku": "MARMIKI66T6", "cantidad": 2}, {"sku": "MARMIKI39T6", "cantidad": 2}, {"sku": "MARMIKI48T12", "cantidad": 2}, {"sku": "MARMICA39T2XL", "cantidad": 1}, {"sku": "MARMICA39TS", "cantidad": 1}, {"sku": "MARMICA24T3XL", "cantidad": 1}, {"sku": "MARMICA24TS", "cantidad": 1}, {"sku": "MARMICA28TM", "cantidad": 1}, {"sku": "MARMICA11T2XL", "cantidad": 1}, {"sku": "MARMICA09TS", "cantidad": 1}, {"sku": "MARMICA30TXL", "cantidad": 1}, {"sku": "MARMICA16TS", "cantidad": 1}, {"sku": "MARMICA24TL", "cantidad": 1}, {"sku": "MARMIDA39TXS", "cantidad": 1}, {"sku": "MARMIDA34TXL", "cantidad": 1}, {"sku": "MARMIDA39TXL", "cantidad": 1}, {"sku": "MARMICA70T2XL", "cantidad": 1}, {"sku": "MARMICA52TS", "cantidad": 1}, {"sku": "MARMICA50TXL", "cantidad": 1}, {"sku": "MARMIDA34TL", "cantidad": 1}, {"sku": "MARMIDA28TXL", "cantidad": 1}, {"sku": "MARMIDA30TM", "cantidad": 1}, {"sku": "MARMIDA34T2XL", "cantidad": 1}, {"sku": "MARMIDA28TL", "cantidad": 1}, {"sku": "MARMIDA16TXL", "cantidad": 1}, {"sku": "MARMICA66TXL", "cantidad": 1}, {"sku": "MARMICA66T2XL", "cantidad": 1}, {"sku": "MARMIDA01TM", "cantidad": 1}, {"sku": "MARMIDA04TS", "cantidad": 1}, {"sku": "MARMIDA04TM", "cantidad": 1}, {"sku": "MARMIDA11TL", "cantidad": 1}, {"sku": "MARMIDA05TXS", "cantidad": 1}, {"sku": "MARMIKI12T8", "cantidad": 1}, {"sku": "MARMIKI12T2", "cantidad": 1}, {"sku": "MARMIKI12T14", "cantidad": 1}, {"sku": "MARMIKI11T10", "cantidad": 1}, {"sku": "MARMIDA70TXL", "cantidad": 1}, {"sku": "MARMIKI04T12", "cantidad": 1}, {"sku": "MARMIKI04T8", "cantidad": 1}, {"sku": "MARMIDA53TXL", "cantidad": 1}, {"sku": "MARMIDA53TS", "cantidad": 1}, {"sku": "MARMIDA50TXS", "cantidad": 1}, {"sku": "MARMIKI28T6", "cantidad": 1}, {"sku": "MARMIKI28T10", "cantidad": 1}, {"sku": "MARMIKI16T1", "cantidad": 1}, {"sku": "MARMIKI13T14", "cantidad": 1}, {"sku": "MARMIKI13T8", "cantidad": 1}, {"sku": "MARMIKI13T6", "cantidad": 1}, {"sku": "MARMIKI43T10", "cantidad": 1}, {"sku": "MARMIKI34T6", "cantidad": 1}, {"sku": "MARMIKI34T8", "cantidad": 1}, {"sku": "MARMIKI39T10", "cantidad": 1}, {"sku": "MARMIKI34T2", "cantidad": 1}, {"sku": "MARMIKI16T4", "cantidad": 1}, {"sku": "MARMIKI48T14", "cantidad": 1}, {"sku": "MARMIKI43T4", "cantidad": 1}, {"sku": "MARMIKI50T10", "cantidad": 1}, {"sku": "MARMIKI48T8", "cantidad": 1}, {"sku": "MARMIKI48T2", "cantidad": 1}, {"sku": "MARMIKI53T10", "cantidad": 1}, {"sku": "MARMIKI53T2", "cantidad": 1}, {"sku": "MARMIKI66T4", "cantidad": 1}, {"sku": "MARMIKI70T2", "cantidad": 1}, {"sku": "MARMIKI70T6", "cantidad": 1}], "monthly": {"agosto-2025": 31, "septiembre-2025": 42, "octubre-2025": 121, "noviembre-2025": 80, "diciembre-2025": 81, "enero-2026": 25, "febrero-2026": 198, "marzo-2026": 213, "abril-2026": 118, "mayo-2026": 29}, "colors": {"Azul Marino": 185, "Negro": 88, "Aguamarina": 82, "Blanco": 71, "Vinotinto": 69, "Morado": 68, "Azul Rey": 64, "Rojo": 62, "Verde Militar": 60, "Lila": 53, "Púrpura": 46, "Azul Lavanda": 29, "Fucsia": 27, "Gris Claro": 9, "Amarillo Neón": 8, "Coral Neón": 8, "Rosado Pastel": 4, "Azul Cielo": 3, "Amarillo Pastel": 1, "Rosado Neón": 1}, "tallas": {"M": 297, "S": 261, "L": 171, "XS": 69, "XL": 53, "6": 20, "8": 15, "10": 12, "2XL": 11, "12": 8, "14": 6, "4": 6, "2": 5, "3XL": 3, "1": 1}, "genero": ["DAMA", "CABALLERO", "KIDS"]}, {"modelo": "MAYA SPORT LITE", "total": 57, "skus": [{"sku": "MAYFNDA24TS", "cantidad": 21}, {"sku": "MAYFNDA24TM", "cantidad": 8}, {"sku": "MAYFNDA13TM", "cantidad": 4}, {"sku": "MAYFNDA13TXS", "cantidad": 4}, {"sku": "MAYFNDA13TS", "cantidad": 3}, {"sku": "MAYFNDA13TL", "cantidad": 3}, {"sku": "MAYFNDA10TM", "cantidad": 3}, {"sku": "MAYFNDA24TL", "cantidad": 2}, {"sku": "MAYFNDA10TL", "cantidad": 2}, {"sku": "MAYFNDA16TS", "cantidad": 2}, {"sku": "MAYFNDA10TS", "cantidad": 1}, {"sku": "MAYFNDA16TL", "cantidad": 1}, {"sku": "MAYFNDA24TXS", "cantidad": 1}, {"sku": "MAYFNDA70TL", "cantidad": 1}, {"sku": "MAYFNDA70TM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 16, "noviembre-2025": 3, "diciembre-2025": 4, "enero-2026": 4, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 30, "mayo-2026": 0}, "colors": {"Coral Neón": 32, "Azul Rey": 14, "Azul Lago": 6, "Blanco": 3, "Vinotinto": 2}, "tallas": {"S": 27, "M": 16, "L": 9, "XS": 5}, "genero": ["DAMA"]}, {"modelo": "MESH CAP", "total": 4, "skus": [{"sku": "CAP15MC", "cantidad": 3}, {"sku": "CAP44MC", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 4, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Black": 3, "Niebla": 1}, "tallas": {}, "genero": []}, {"modelo": "MIA ORIGINAL", "total": 11, "skus": [{"sku": "MIAMIDA43TS", "cantidad": 3}, {"sku": "MIAMIDA05TS", "cantidad": 2}, {"sku": "MIAMIDA16TM", "cantidad": 1}, {"sku": "MIAMIDA05TM", "cantidad": 1}, {"sku": "MIAMIDA16TS", "cantidad": 1}, {"sku": "MIAMIDA43TM", "cantidad": 1}, {"sku": "MIAMIDA43TXS", "cantidad": 1}, {"sku": "MIAMIDA70TXS", "cantidad": 1}], "monthly": {"agosto-2025": 6, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 2}, "colors": {"Negro": 5, "Amarillo Pastel": 3, "Blanco": 2, "Vinotinto": 1}, "tallas": {"S": 6, "M": 3, "XS": 2}, "genero": ["DAMA"]}, {"modelo": "MIKA SPORT LITE", "total": 60, "skus": [{"sku": "MIKFNDA10TS", "cantidad": 12}, {"sku": "MIKFNDA24TM", "cantidad": 11}, {"sku": "MIKFNDA24TL", "cantidad": 6}, {"sku": "MIKFNDA24TS", "cantidad": 4}, {"sku": "MIKFNDA16TM", "cantidad": 4}, {"sku": "MIKFNDA16TS", "cantidad": 3}, {"sku": "MIKFNDA10TM", "cantidad": 3}, {"sku": "MIKFNDA10TL", "cantidad": 2}, {"sku": "MIKFNDA70TM", "cantidad": 2}, {"sku": "MIKFNDA16TXS", "cantidad": 2}, {"sku": "MIKFNDA10TXL", "cantidad": 1}, {"sku": "MIKFNDA10TXS", "cantidad": 1}, {"sku": "MIKFNDA13TM", "cantidad": 1}, {"sku": "MIKFNDA16TXL", "cantidad": 1}, {"sku": "MIKFNDA13TS", "cantidad": 1}, {"sku": "MIKFNDA13TXS", "cantidad": 1}, {"sku": "MIKFNDA16TL", "cantidad": 1}, {"sku": "MIKFNDA24TXS", "cantidad": 1}, {"sku": "MIKFNDA70TL", "cantidad": 1}, {"sku": "MIKFNDA70TS", "cantidad": 1}, {"sku": "MIKFNDA70TXS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 37, "noviembre-2025": 0, "diciembre-2025": 3, "enero-2026": 1, "febrero-2026": 7, "marzo-2026": 0, "abril-2026": 10, "mayo-2026": 2}, "colors": {"Coral Neón": 22, "Azul Lago": 19, "Blanco": 11, "Vinotinto": 5, "Azul Rey": 3}, "tallas": {"M": 21, "S": 21, "L": 10, "XS": 6, "XL": 2}, "genero": ["DAMA"]}, {"modelo": "MINI BAG", "total": 46, "skus": [{"sku": "KOA43KA", "cantidad": 18}, {"sku": "KOA131KA", "cantidad": 10}, {"sku": "KOA132KA", "cantidad": 7}, {"sku": "KOA13KA", "cantidad": 6}, {"sku": "KOA65KA", "cantidad": 5}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 10, "noviembre-2025": 16, "diciembre-2025": 7, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 9, "mayo-2026": 3}, "colors": {"Negro": 18, "Camel": 10, "Bronce": 7, "Azul Rey": 6, "Verde Menta": 5}, "tallas": {}, "genero": []}, {"modelo": "NOAH SPORT LITE", "total": 74, "skus": [{"sku": "NAHFNCA24TM", "cantidad": 16}, {"sku": "NAHFNCA24TS", "cantidad": 7}, {"sku": "NAHFNCA13TM", "cantidad": 6}, {"sku": "NAHFNCA13TL", "cantidad": 5}, {"sku": "NAHFNCA70TM", "cantidad": 5}, {"sku": "NAHFNCA13TS", "cantidad": 4}, {"sku": "NAHFNCA70TL", "cantidad": 4}, {"sku": "NAHFNCA16TS", "cantidad": 4}, {"sku": "NAHFNCA70TS", "cantidad": 3}, {"sku": "NAHFNCA10TL", "cantidad": 3}, {"sku": "NAHFNCA16TM", "cantidad": 3}, {"sku": "NAHFNCA16TL", "cantidad": 3}, {"sku": "NAHFNCA13T2XL", "cantidad": 2}, {"sku": "NAHFNCA10TM", "cantidad": 2}, {"sku": "NAHFNCA10T2XL", "cantidad": 1}, {"sku": "NAHFNCA10TS", "cantidad": 1}, {"sku": "NAHFNCA13TXL", "cantidad": 1}, {"sku": "NAHFNCA16T2XL", "cantidad": 1}, {"sku": "NAHFNCA24TL", "cantidad": 1}, {"sku": "NAHFNCA16TXL", "cantidad": 1}, {"sku": "NAHFNCA70T2XL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 36, "noviembre-2025": 4, "diciembre-2025": 13, "enero-2026": 6, "febrero-2026": 4, "marzo-2026": 1, "abril-2026": 8, "mayo-2026": 2}, "colors": {"Coral Neón": 24, "Azul Rey": 18, "Vinotinto": 13, "Blanco": 12, "Azul Lago": 7}, "tallas": {"M": 32, "S": 19, "L": 16, "2XL": 5, "XL": 2}, "genero": ["CABALLERO"]}, {"modelo": "PONCHO", "total": 10, "skus": [{"sku": "PONKI35EQ", "cantidad": 7}, {"sku": "PONKI09EQ", "cantidad": 1}, {"sku": "PONKI30EQ", "cantidad": 1}, {"sku": "PONKI63EQ", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 4, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 2, "abril-2026": 3, "mayo-2026": 0}, "colors": {"Magenta": 7, "Azul Cielo": 1, "Gris Claro": 1, "Verde Agua": 1}, "tallas": {}, "genero": []}, {"modelo": "PONCHO ADULTO", "total": 8, "skus": [{"sku": "PONC151EQ", "cantidad": 5}, {"sku": "PONC01EQ", "cantidad": 2}, {"sku": "PONC152EQ", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 3, "febrero-2026": 3, "marzo-2026": 1, "abril-2026": 1, "mayo-2026": 0}, "colors": {"AZUL": 5, "AGUAMARINA": 2, "VERDE": 1}, "tallas": {}, "genero": []}, {"modelo": "PRO CAP", "total": 3, "skus": [{"sku": "CAP43PC", "cantidad": 2}, {"sku": "CAP16PC", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 2, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 2, "Blanco": 1}, "tallas": {}, "genero": []}, {"modelo": "REFRESH VERDE", "total": 1, "skus": [{"sku": "REFVERTOEQ152EQ", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 1}, "colors": {"REFRESH 1": 1}, "tallas": {}, "genero": []}, {"modelo": "RIO ORIGINAL", "total": 101, "skus": [{"sku": "RIOMICA66TL", "cantidad": 10}, {"sku": "RIOMICA16TL", "cantidad": 6}, {"sku": "RIOMICA43TL", "cantidad": 5}, {"sku": "RIOMIDA43TM", "cantidad": 5}, {"sku": "RIOMICA16TM", "cantidad": 4}, {"sku": "RIOMICA43TS", "cantidad": 4}, {"sku": "RIOMICA66TXL", "cantidad": 4}, {"sku": "RIOMIDA16TS", "cantidad": 4}, {"sku": "RIOMICA66TM", "cantidad": 3}, {"sku": "RIOMICA50TL", "cantidad": 3}, {"sku": "RIOMICA12TM", "cantidad": 2}, {"sku": "RIOMICA12TXL", "cantidad": 2}, {"sku": "RIOMICA43TM", "cantidad": 2}, {"sku": "RIOMICA66T2XL", "cantidad": 2}, {"sku": "RIOMIDA50TS", "cantidad": 2}, {"sku": "RIOMIDA13TM", "cantidad": 2}, {"sku": "RIOMIDA43TS", "cantidad": 2}, {"sku": "RIOMIDA34TM", "cantidad": 2}, {"sku": "RIOMIKI50T2", "cantidad": 2}, {"sku": "RIOMICA13TS", "cantidad": 1}, {"sku": "RIOMICA11TS", "cantidad": 1}, {"sku": "RIOMICA13TL", "cantidad": 1}, {"sku": "RIOMICA66T3XL", "cantidad": 1}, {"sku": "RIOMICA50TXL", "cantidad": 1}, {"sku": "RIOMICA48TL", "cantidad": 1}, {"sku": "RIOMICA50TM", "cantidad": 1}, {"sku": "RIOMICA43TXL", "cantidad": 1}, {"sku": "RIOMICA16T2XL", "cantidad": 1}, {"sku": "RIOMICA13TXL", "cantidad": 1}, {"sku": "RIOMICA16TS", "cantidad": 1}, {"sku": "RIOMICA12TL", "cantidad": 1}, {"sku": "RIOMIDA12TXL", "cantidad": 1}, {"sku": "RIOMIDA13TXS", "cantidad": 1}, {"sku": "RIOMIDA09TS", "cantidad": 1}, {"sku": "RIOMIDA34TS", "cantidad": 1}, {"sku": "RIOMIDA16TM", "cantidad": 1}, {"sku": "RIOMIDA11TM", "cantidad": 1}, {"sku": "RIOMICA66TS", "cantidad": 1}, {"sku": "RIOMIDA50TM", "cantidad": 1}, {"sku": "RIOMIDA43TL", "cantidad": 1}, {"sku": "RIOMIDA50TXS", "cantidad": 1}, {"sku": "RIOMIDA50TXL", "cantidad": 1}, {"sku": "RIOMIDA53TXL", "cantidad": 1}, {"sku": "RIOMIDA66TS", "cantidad": 1}, {"sku": "RIOMIDA70TM", "cantidad": 1}, {"sku": "RIOMIDA53TM", "cantidad": 1}, {"sku": "RIOMIKI01T2", "cantidad": 1}, {"sku": "RIOMIKI12T2", "cantidad": 1}, {"sku": "RIOMIKI13T4", "cantidad": 1}, {"sku": "RIOMIKI12T6", "cantidad": 1}, {"sku": "RIOMIKI30T12", "cantidad": 1}, {"sku": "RIOMIKI43T2", "cantidad": 1}, {"sku": "RIOMIKI50T4", "cantidad": 1}, {"sku": "RIOMIKI50T8", "cantidad": 1}], "monthly": {"agosto-2025": 4, "septiembre-2025": 1, "octubre-2025": 23, "noviembre-2025": 6, "diciembre-2025": 16, "enero-2026": 10, "febrero-2026": 10, "marzo-2026": 22, "abril-2026": 4, "mayo-2026": 5}, "colors": {"Verde Militar": 22, "Negro": 21, "Blanco": 17, "Rojo": 14, "Azul Marino": 8, "Azul Rey": 7, "Lila": 3, "Rosado Pastel": 2, "Azul Lavanda": 2, "Azul Cielo": 1, "Aguamarina": 1, "Gris Claro": 1, "Púrpura": 1, "Vinotinto": 1}, "tallas": {"L": 28, "M": 26, "S": 19, "XL": 12, "2": 5, "2XL": 3, "4": 2, "XS": 2, "3XL": 1, "12": 1, "8": 1, "6": 1}, "genero": ["CABALLERO", "DAMA", "KIDS"]}, {"modelo": "SABRI SPORT", "total": 8, "skus": [{"sku": "SABMEDA12TM", "cantidad": 3}, {"sku": "SABMEDA16TM", "cantidad": 3}, {"sku": "SABMEDA13TM", "cantidad": 1}, {"sku": "SABMEDA16TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 4, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 1, "febrero-2026": 0, "marzo-2026": 2, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Blanco": 4, "Azul Marino": 3, "Azul Rey": 1}, "tallas": {"M": 7, "S": 1}, "genero": ["DAMA"]}, {"modelo": "SHORT PLAYA", "total": 40, "skus": [{"sku": "SHOUNCA12TL", "cantidad": 6}, {"sku": "SHOUNCA29TM", "cantidad": 4}, {"sku": "SHOUNCA68TM", "cantidad": 3}, {"sku": "SHOUNCA12TXL", "cantidad": 2}, {"sku": "SHOUNCA01TL", "cantidad": 2}, {"sku": "SHOUNCA12TM", "cantidad": 2}, {"sku": "SHOUNCA01TXL", "cantidad": 1}, {"sku": "SHOUNCA12TS", "cantidad": 1}, {"sku": "SHOUNCA187TL", "cantidad": 1}, {"sku": "SHOUNCA12T2XL", "cantidad": 1}, {"sku": "SHOUNCA12T3XL", "cantidad": 1}, {"sku": "SHOUNCA29T3XL", "cantidad": 1}, {"sku": "SHOUNCA23TM", "cantidad": 1}, {"sku": "SHOUNCA29TXL", "cantidad": 1}, {"sku": "SHOUNCA29TL", "cantidad": 1}, {"sku": "SHOUNCA33TL", "cantidad": 1}, {"sku": "SHOUNCA50TXL", "cantidad": 1}, {"sku": "SHOUNCA68T2XL", "cantidad": 1}, {"sku": "SHOUNCA68TL", "cantidad": 1}, {"sku": "SHOUNCA68TXL", "cantidad": 1}, {"sku": "SHOUNCA69TL", "cantidad": 1}, {"sku": "SHOUNKI01T8", "cantidad": 1}, {"sku": "SHOUNKI23T4", "cantidad": 1}, {"sku": "SHOUNKI23T8", "cantidad": 1}, {"sku": "SHOUNKI50T6", "cantidad": 1}, {"sku": "SHOUNKI68T10", "cantidad": 1}, {"sku": "SHOUNKI68T4", "cantidad": 1}], "monthly": {"agosto-2025": 1, "septiembre-2025": 4, "octubre-2025": 16, "noviembre-2025": 1, "diciembre-2025": 4, "enero-2026": 1, "febrero-2026": 4, "marzo-2026": 3, "abril-2026": 1, "mayo-2026": 5}, "colors": {"Azul Marino": 13, "Verde Oliva": 8, "Gris Azulado": 7, "Aguamarina": 4, "Coral": 3, "Rojo": 2, "Azul Pizarra": 1, "Kaki": 1, "Verde Pino": 1}, "tallas": {"L": 13, "M": 10, "XL": 6, "2XL": 2, "4": 2, "3XL": 2, "8": 2, "10": 1, "6": 1, "S": 1}, "genero": ["CABALLERO", "KIDS"]}, {"modelo": "SHORT PLAYA ESTAMPADO", "total": 27, "skus": [{"sku": "SHOSUCA156TS", "cantidad": 3}, {"sku": "SHOSUCA153TM", "cantidad": 2}, {"sku": "SHOSUCA156TL", "cantidad": 2}, {"sku": "SHOSUCA153TS", "cantidad": 2}, {"sku": "SHOSUCA154TM", "cantidad": 2}, {"sku": "SHOSUCA154TL", "cantidad": 2}, {"sku": "SHOSUCA156TM", "cantidad": 2}, {"sku": "SHOSUCA155TM", "cantidad": 2}, {"sku": "SHOSUCA153TL", "cantidad": 1}, {"sku": "SHOSUCA155TL", "cantidad": 1}, {"sku": "SHOSUKI153T10", "cantidad": 1}, {"sku": "SHOSUKI153T8", "cantidad": 1}, {"sku": "SHOSUKI154T10", "cantidad": 1}, {"sku": "SHOSUKI154T4", "cantidad": 1}, {"sku": "SHOSUKI154T6", "cantidad": 1}, {"sku": "SHOSUKI155T6", "cantidad": 1}, {"sku": "SHOSUKI156T10", "cantidad": 1}, {"sku": "SHOSUKI156T6", "cantidad": 1}], "monthly": {"agosto-2025": 7, "septiembre-2025": 0, "octubre-2025": 13, "noviembre-2025": 0, "diciembre-2025": 2, "enero-2026": 1, "febrero-2026": 1, "marzo-2026": 2, "abril-2026": 0, "mayo-2026": 1}, "colors": {"TUCUPIDO": 9, "SAL": 7, "SOMBRERO": 7, "PLAYUELA": 4}, "tallas": {"M": 8, "L": 6, "S": 5, "10": 3, "6": 3, "4": 1, "8": 1}, "genero": ["CABALLERO", "KIDS"]}, {"modelo": "SHORT R2", "total": 2, "skus": [{"sku": "SHR2VIDA123TL", "cantidad": 1}, {"sku": "SHR2VIDA13TXS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 1}, "colors": {"Azul Rey": 1, "Verde Manzana": 1}, "tallas": {"L": 1, "XS": 1}, "genero": ["DAMA"]}, {"modelo": "SHORT SPORT", "total": 105, "skus": [{"sku": "SHONRCA30TM", "cantidad": 16}, {"sku": "SHONRCA43TM", "cantidad": 16}, {"sku": "SHONRCA43TL", "cantidad": 9}, {"sku": "SHONRCA16TM", "cantidad": 9}, {"sku": "SHONRCA12TM", "cantidad": 8}, {"sku": "SHONRCA43TS", "cantidad": 7}, {"sku": "SHONRCA16TL", "cantidad": 6}, {"sku": "SHONRCA66TM", "cantidad": 5}, {"sku": "SHONRCA12TS", "cantidad": 5}, {"sku": "SHONRCA30TL", "cantidad": 5}, {"sku": "SHONRCA12TL", "cantidad": 4}, {"sku": "SHONRCA30TS", "cantidad": 4}, {"sku": "SHONRKI16T12", "cantidad": 3}, {"sku": "SHONRCA16TS", "cantidad": 3}, {"sku": "SHONRCA12T2XL", "cantidad": 1}, {"sku": "SHONRCA12TXL", "cantidad": 1}, {"sku": "SHONRCA43T2XL", "cantidad": 1}, {"sku": "SHONRCA66TL", "cantidad": 1}, {"sku": "SHONRCA43TXL", "cantidad": 1}], "monthly": {"agosto-2025": 6, "septiembre-2025": 4, "octubre-2025": 34, "noviembre-2025": 2, "diciembre-2025": 4, "enero-2026": 16, "febrero-2026": 0, "marzo-2026": 4, "abril-2026": 31, "mayo-2026": 4}, "colors": {"Negro": 34, "Gris Claro": 25, "Blanco": 21, "Azul Marino": 19, "Verde Militar": 6}, "tallas": {"M": 54, "L": 25, "S": 19, "12": 3, "2XL": 2, "XL": 2}, "genero": ["CABALLERO", "KIDS"]}, {"modelo": "SHORT SPORT R1", "total": 26, "skus": [{"sku": "SHUNTCA43TM", "cantidad": 4}, {"sku": "SHUNTCA43TL", "cantidad": 3}, {"sku": "SHUNTDA43TL", "cantidad": 3}, {"sku": "SHUNTDA43TM", "cantidad": 3}, {"sku": "SHUNTDA43TS", "cantidad": 2}, {"sku": "SHUNTCA31TL", "cantidad": 2}, {"sku": "SHUNTCA157TM", "cantidad": 2}, {"sku": "SHUNTDA157TM", "cantidad": 2}, {"sku": "SHUNTDA157TS", "cantidad": 2}, {"sku": "SHUNTCA157TL", "cantidad": 1}, {"sku": "SHUNTDA31TXS", "cantidad": 1}, {"sku": "SHUNTDA43TXS", "cantidad": 1}], "monthly": {"agosto-2025": 5, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 7, "febrero-2026": 1, "marzo-2026": 8, "abril-2026": 2, "mayo-2026": 0}, "colors": {"Negro": 16, "Gris": 7, "Gris Oscuro": 3}, "tallas": {"M": 11, "L": 9, "S": 4, "XS": 2}, "genero": ["CABALLERO", "DAMA"]}, {"modelo": "SUN HAT", "total": 28, "skus": [{"sku": "SUN43EQ", "cantidad": 22}, {"sku": "SUN66EQ", "cantidad": 6}], "monthly": {"agosto-2025": 1, "septiembre-2025": 1, "octubre-2025": 8, "noviembre-2025": 3, "diciembre-2025": 9, "enero-2026": 2, "febrero-2026": 1, "marzo-2026": 2, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Negro": 22, "Verde Militar": 6}, "tallas": {}, "genero": []}, {"modelo": "SUNNY CORD 2.0", "total": 182, "skus": [{"sku": "SUC39EQ", "cantidad": 42}, {"sku": "SUC50EQ", "cantidad": 41}, {"sku": "SUC34EQ", "cantidad": 41}, {"sku": "SUC42EQ", "cantidad": 40}, {"sku": "SUC16EQ", "cantidad": 13}, {"sku": "SUC103EQ", "cantidad": 4}, {"sku": "SUC43EQ", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 10, "octubre-2025": 165, "noviembre-2025": 4, "diciembre-2025": 1, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 1}, "colors": {"Morado": 42, "Lila": 41, "Rojo": 41, "Naranja": 40, "Blanco": 17, "Negro": 1}, "tallas": {}, "genero": []}, {"modelo": "TOALLA CLIP 2.0", "total": 76, "skus": [{"sku": "TOA43CLI", "cantidad": 31}, {"sku": "TOA50CLI", "cantidad": 9}, {"sku": "TOA63CLI", "cantidad": 8}, {"sku": "TOA30CLI", "cantidad": 7}, {"sku": "TOA16CLI", "cantidad": 7}, {"sku": "TOA09CLI", "cantidad": 6}, {"sku": "TOA12CLI", "cantidad": 4}, {"sku": "TOA64CLI", "cantidad": 4}], "monthly": {"agosto-2025": 1, "septiembre-2025": 0, "octubre-2025": 25, "noviembre-2025": 5, "diciembre-2025": 15, "enero-2026": 12, "febrero-2026": 1, "marzo-2026": 10, "abril-2026": 1, "mayo-2026": 6}, "colors": {"Negro": 31, "Rojo": 9, "Verde Agua": 8, "Gris Claro": 7, "Blanco": 7, "Azul Cielo": 6, "Azul Marino": 4, "Verde Grama": 4}, "tallas": {}, "genero": []}, {"modelo": "TOALLA ESTAMPADA", "total": 165, "skus": [{"sku": "TOA140ES", "cantidad": 64}, {"sku": "TOA138ES", "cantidad": 26}, {"sku": "TOA139ES", "cantidad": 25}, {"sku": "TOA125ES", "cantidad": 19}, {"sku": "TOA137ES", "cantidad": 13}, {"sku": "TOA127ES", "cantidad": 8}, {"sku": "TOA124ES", "cantidad": 7}, {"sku": "TOA126ES", "cantidad": 3}], "monthly": {"agosto-2025": 28, "septiembre-2025": 9, "octubre-2025": 41, "noviembre-2025": 5, "diciembre-2025": 23, "enero-2026": 13, "febrero-2026": 5, "marzo-2026": 7, "abril-2026": 32, "mayo-2026": 2}, "colors": {"Avila": 64, "Cayo de Agua": 26, "Choroni": 25, "Candy": 19, "Roraima": 13, "Oceano": 8, "Bitacora": 7, "Retro": 3}, "tallas": {}, "genero": []}, {"modelo": "TOALLA ESTAMPADA 2.0", "total": 50, "skus": [{"sku": "TOA203ES", "cantidad": 16}, {"sku": "TOA198ES", "cantidad": 8}, {"sku": "TOA197ES", "cantidad": 7}, {"sku": "TOA196ES", "cantidad": 7}, {"sku": "TOA200ES", "cantidad": 6}, {"sku": "TOA202ES", "cantidad": 3}, {"sku": "TOA199ES", "cantidad": 2}, {"sku": "TOA201ES", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 4, "febrero-2026": 7, "marzo-2026": 22, "abril-2026": 14, "mayo-2026": 3}, "colors": {"Waves": 16, "Canaima": 8, "Morrocoy": 7, "Margarita": 7, "Caribe": 6, "Beat": 3, "Pico Bolivar": 2, "Stripes": 1}, "tallas": {}, "genero": []}, {"modelo": "TOALLA PLAYA", "total": 157, "skus": [{"sku": "TOA12PL", "cantidad": 43}, {"sku": "TOA01PL", "cantidad": 41}, {"sku": "TOA39PL", "cantidad": 25}, {"sku": "TOA13PL", "cantidad": 9}, {"sku": "TOA43PL", "cantidad": 9}, {"sku": "TOA50PL", "cantidad": 8}, {"sku": "TOA66PL", "cantidad": 7}, {"sku": "TOA35PL", "cantidad": 6}, {"sku": "TOA65PL", "cantidad": 4}, {"sku": "TOA30PL", "cantidad": 3}, {"sku": "TOA05PL", "cantidad": 1}, {"sku": "TOA03PL", "cantidad": 1}], "monthly": {"agosto-2025": 16, "septiembre-2025": 22, "octubre-2025": 26, "noviembre-2025": 39, "diciembre-2025": 8, "enero-2026": 5, "febrero-2026": 20, "marzo-2026": 3, "abril-2026": 5, "mayo-2026": 13}, "colors": {"Azul Marino": 43, "Aguamarina": 41, "Morado": 25, "Azul Rey": 9, "Negro": 9, "Rojo": 8, "Verde Militar": 7, "Magenta": 6, "Verde Menta": 4, "Gris Claro": 3, "Amarillo Pastel": 1, "Amarillo": 1}, "tallas": {}, "genero": []}, {"modelo": "TOALLA SPORT", "total": 449, "skus": [{"sku": "TOA43SP", "cantidad": 236}, {"sku": "TOA50SP", "cantidad": 92}, {"sku": "TOA12SP", "cantidad": 47}, {"sku": "TOA66SP", "cantidad": 33}, {"sku": "TOA39SP", "cantidad": 14}, {"sku": "TOA35SP", "cantidad": 9}, {"sku": "TOA01SP", "cantidad": 6}, {"sku": "TOA13SP", "cantidad": 5}, {"sku": "TOA30SP", "cantidad": 4}, {"sku": "TOA65SP", "cantidad": 3}], "monthly": {"agosto-2025": 33, "septiembre-2025": 47, "octubre-2025": 159, "noviembre-2025": 99, "diciembre-2025": 16, "enero-2026": 19, "febrero-2026": 12, "marzo-2026": 20, "abril-2026": 37, "mayo-2026": 7}, "colors": {"Negro": 236, "Rojo": 92, "Azul Marino": 47, "Verde Militar": 33, "Morado": 14, "Magenta": 9, "Aguamarina": 6, "Azul Rey": 5, "Gris Claro": 4, "Verde Menta": 3}, "tallas": {}, "genero": []}, {"modelo": "TOALLA WAFFLE", "total": 1, "skus": [{"sku": "TOA64WA", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 1, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Verde Grama": 1}, "tallas": {}, "genero": []}, {"modelo": "TOP MOVA", "total": 11, "skus": [{"sku": "TMOFIDA43TM", "cantidad": 3}, {"sku": "TMOFIDA66TS", "cantidad": 2}, {"sku": "TMOFIDA12TM", "cantidad": 2}, {"sku": "TMOFIDA12TXS", "cantidad": 1}, {"sku": "TMOFIDA10TXS", "cantidad": 1}, {"sku": "TMOFIDA43TS", "cantidad": 1}, {"sku": "TMOFIDA66TM", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 2, "febrero-2026": 1, "marzo-2026": 7, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 4, "Azul Marino": 3, "Verde Militar": 3, "Azul Lago": 1}, "tallas": {"M": 6, "S": 3, "XS": 2}, "genero": ["DAMA"]}, {"modelo": "TOTE BAG", "total": 75, "skus": [{"sku": "TOT3020L", "cantidad": 31}, {"sku": "TOT6620L", "cantidad": 15}, {"sku": "TOT1620L", "cantidad": 13}, {"sku": "TOT0320L", "cantidad": 9}, {"sku": "TOT4320L", "cantidad": 5}, {"sku": "TOT1320L", "cantidad": 1}, {"sku": "TOT5020L", "cantidad": 1}], "monthly": {"agosto-2025": 1, "septiembre-2025": 2, "octubre-2025": 26, "noviembre-2025": 5, "diciembre-2025": 8, "enero-2026": 27, "febrero-2026": 0, "marzo-2026": 5, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Gris Claro": 31, "Verde Militar": 15, "Blanco": 13, "Amarillo": 9, "Negro": 5, "Azul Rey": 1, "Rojo": 1}, "tallas": {}, "genero": []}, {"modelo": "TRAVEL BACKPACK", "total": 70, "skus": [{"sku": "TRA66TB", "cantidad": 21}, {"sku": "TRA43TB", "cantidad": 21}, {"sku": "TRA30TB", "cantidad": 15}, {"sku": "TRA12TB", "cantidad": 13}], "monthly": {"agosto-2025": 2, "septiembre-2025": 1, "octubre-2025": 34, "noviembre-2025": 4, "diciembre-2025": 11, "enero-2026": 7, "febrero-2026": 5, "marzo-2026": 3, "abril-2026": 2, "mayo-2026": 1}, "colors": {"Verde Militar": 21, "Negro": 21, "Gris Claro": 15, "Azul Marino": 13}, "tallas": {}, "genero": []}, {"modelo": "TRAVEL BAG 18L", "total": 29, "skus": [{"sku": "TRA4318L", "cantidad": 15}, {"sku": "TRA6718L", "cantidad": 8}, {"sku": "TRA5018L", "cantidad": 6}], "monthly": {"agosto-2025": 0, "septiembre-2025": 1, "octubre-2025": 10, "noviembre-2025": 2, "diciembre-2025": 2, "enero-2026": 2, "febrero-2026": 9, "marzo-2026": 1, "abril-2026": 1, "mayo-2026": 1}, "colors": {"Negro": 15, "Verde Neon": 8, "Rojo": 6}, "tallas": {}, "genero": []}, {"modelo": "TRAVEL BAG 40L", "total": 39, "skus": [{"sku": "TRA4340L", "cantidad": 24}, {"sku": "TRA3140L", "cantidad": 9}, {"sku": "TRA1240L", "cantidad": 4}, {"sku": "TRA1340L", "cantidad": 1}, {"sku": "TRA5040L", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 1, "octubre-2025": 9, "noviembre-2025": 3, "diciembre-2025": 6, "enero-2026": 6, "febrero-2026": 12, "marzo-2026": 1, "abril-2026": 0, "mayo-2026": 1}, "colors": {"Negro": 24, "Gris Oscuro": 9, "Azul Marino": 4, "Azul Rey": 1, "Rojo": 1}, "tallas": {}, "genero": []}, {"modelo": "UNIHOODIE", "total": 13, "skus": [{"sku": "OVEFTGE43TL", "cantidad": 5}, {"sku": "OVEFTGE30TM", "cantidad": 2}, {"sku": "OVEFTGE43TXL", "cantidad": 2}, {"sku": "OVEFTGE43TM", "cantidad": 2}, {"sku": "OVEFTGE31TXL", "cantidad": 1}, {"sku": "OVEFTGE43TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 13, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Negro": 10, "Gris Claro": 2, "Gris Oscuro": 1}, "tallas": {"L": 5, "M": 4, "XL": 3, "S": 1}, "genero": []}, {"modelo": "URBAN COTTON OVERSIZED COLOR BLOCK", "total": 3, "skus": [{"sku": "TALGTACA167TM", "cantidad": 1}, {"sku": "TALGTACA167TS", "cantidad": 1}, {"sku": "TALGTACA167TXS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 3, "mayo-2026": 0}, "colors": {"Verde": 3}, "tallas": {"M": 1, "S": 1, "XS": 1}, "genero": ["CABALLERO"]}, {"modelo": "URBAN COTTON OVERSIZED HORIZONTE", "total": 3, "skus": [{"sku": "TALGOTACA166TL", "cantidad": 1}, {"sku": "TALGOTACA166TS", "cantidad": 1}, {"sku": "TALGOTACA166TXL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 2, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Gris": 3}, "tallas": {"L": 1, "S": 1, "XL": 1}, "genero": ["CABALLERO"]}, {"modelo": "URBAN COTTON OVERSIZED OUTSIDE", "total": 4, "skus": [{"sku": "TALGTACA12TL", "cantidad": 2}, {"sku": "TALGTACA12TM", "cantidad": 1}, {"sku": "TALGTACA12TXS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 2, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 1}, "colors": {"Azul Marino": 4}, "tallas": {"L": 2, "M": 1, "XS": 1}, "genero": ["CABALLERO"]}, {"modelo": "URBAN COTTON OVERSIZED SUNSET", "total": 3, "skus": [{"sku": "TALGOTACA12TL", "cantidad": 1}, {"sku": "TALGOTACA12TM", "cantidad": 1}, {"sku": "TALGOTACA12TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 2, "mayo-2026": 0}, "colors": {"Azul Marino": 3}, "tallas": {"L": 1, "M": 1, "S": 1}, "genero": ["CABALLERO"]}, {"modelo": "URBAN COTTON OVERSIZED VINTAGE GRIS", "total": 4, "skus": [{"sku": "TALGOTACA167TL", "cantidad": 2}, {"sku": "TALGOTACA167TM", "cantidad": 1}, {"sku": "TALGOTACA167TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 2, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Verde": 4}, "tallas": {"L": 2, "M": 1, "S": 1}, "genero": ["CABALLERO"]}, {"modelo": "URBAN COTTON OVERSIZED VINTAGE VERDE", "total": 1, "skus": [{"sku": "TALGTACA166TL", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Gris": 1}, "tallas": {"L": 1}, "genero": ["CABALLERO"]}, {"modelo": "URBAN COTTON TOP GRAY BLOCK", "total": 3, "skus": [{"sku": "TALGTADA170TM", "cantidad": 1}, {"sku": "TALGTADA170TS", "cantidad": 1}, {"sku": "TALGTADA170TXS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 2}, "colors": {"Cereza": 3}, "tallas": {"M": 1, "S": 1, "XS": 1}, "genero": ["DAMA"]}, {"modelo": "URBAN COTTON TOP SAY YES", "total": 6, "skus": [{"sku": "TALGTADA12TS", "cantidad": 2}, {"sku": "TALGTADA12TXS", "cantidad": 2}, {"sku": "TALGTADA166TS", "cantidad": 2}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 3, "mayo-2026": 2}, "colors": {"Azul Marino": 4, "Gris": 2}, "tallas": {"S": 4, "XS": 2}, "genero": ["DAMA"]}, {"modelo": "URBAN COTTON TOP SUNSET", "total": 2, "skus": [{"sku": "TALGOTADA166TM", "cantidad": 1}, {"sku": "TALGOTADA166TS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 1, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Gris": 2}, "tallas": {"M": 1, "S": 1}, "genero": ["DAMA"]}, {"modelo": "URBAN COTTON TOP VINTAGE GRIS", "total": 7, "skus": [{"sku": "TALGOTADA170TM", "cantidad": 3}, {"sku": "TALGOTADA12TS", "cantidad": 2}, {"sku": "TALGOTADA12TM", "cantidad": 1}, {"sku": "TALGOTADA170TXS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 4, "febrero-2026": 2, "marzo-2026": 0, "abril-2026": 1, "mayo-2026": 0}, "colors": {"Cereza": 4, "Azul Marino": 3}, "tallas": {"M": 4, "S": 2, "XS": 1}, "genero": ["DAMA"]}, {"modelo": "VESTIDO GEMMA", "total": 4, "skus": [{"sku": "GEMBADA09TM", "cantidad": 3}, {"sku": "GEMBADA39TXS", "cantidad": 1}], "monthly": {"agosto-2025": 1, "septiembre-2025": 0, "octubre-2025": 3, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Azul Cielo": 3, "Morado": 1}, "tallas": {"M": 3, "XS": 1}, "genero": ["DAMA"]}, {"modelo": "VISERA", "total": 7, "skus": [{"sku": "CAP12VS", "cantidad": 7}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 7, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 0, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Azul Marino": 7}, "tallas": {}, "genero": []}, {"modelo": "VIVI ORIGINAL", "total": 33, "skus": [{"sku": "VIVMIDA11TM", "cantidad": 3}, {"sku": "VIVMIDA16TM", "cantidad": 3}, {"sku": "VIVMIDA11TXS", "cantidad": 2}, {"sku": "VIVMIDA13TS", "cantidad": 2}, {"sku": "VIVMIDA11TS", "cantidad": 2}, {"sku": "VIVMIDA43TM", "cantidad": 2}, {"sku": "VIVMIDA48TS", "cantidad": 2}, {"sku": "VIVMIDA16TS", "cantidad": 2}, {"sku": "VIVMIDA16TXS", "cantidad": 2}, {"sku": "VIVMIDA48TXS", "cantidad": 2}, {"sku": "VIVMIDA05TXS", "cantidad": 1}, {"sku": "VIVMIDA12TXS", "cantidad": 1}, {"sku": "VIVMIDA13TXL", "cantidad": 1}, {"sku": "VIVMIDA43TL", "cantidad": 1}, {"sku": "VIVMIDA39TS", "cantidad": 1}, {"sku": "VIVMIDA43TXS", "cantidad": 1}, {"sku": "VIVMIDA43TS", "cantidad": 1}, {"sku": "VIVMIDA48TM", "cantidad": 1}, {"sku": "VIVMIDA66TS", "cantidad": 1}, {"sku": "VIVMIDA66TXS", "cantidad": 1}, {"sku": "VIVMIDA70TXS", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 5, "noviembre-2025": 0, "diciembre-2025": 5, "enero-2026": 2, "febrero-2026": 2, "marzo-2026": 10, "abril-2026": 4, "mayo-2026": 5}, "colors": {"Azul Lavanda": 7, "Blanco": 7, "Púrpura": 5, "Negro": 5, "Azul Rey": 3, "Verde Militar": 2, "Amarillo Pastel": 1, "Azul Marino": 1, "Morado": 1, "Vinotinto": 1}, "tallas": {"S": 11, "XS": 11, "M": 9, "L": 1, "XL": 1}, "genero": ["DAMA"]}, {"modelo": "ZENIT CUADRADO", "total": 1, "skus": [{"sku": "ZCUA15EQ", "cantidad": 1}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 1, "marzo-2026": 0, "abril-2026": 0, "mayo-2026": 0}, "colors": {"Black": 1}, "tallas": {}, "genero": []}, {"modelo": "ZENIT REDONDO", "total": 7, "skus": [{"sku": "ZRED194EQ", "cantidad": 7}], "monthly": {"agosto-2025": 0, "septiembre-2025": 0, "octubre-2025": 0, "noviembre-2025": 0, "diciembre-2025": 0, "enero-2026": 0, "febrero-2026": 3, "marzo-2026": 1, "abril-2026": 3, "mayo-2026": 0}, "colors": {"Terra": 7}, "tallas": {}, "genero": []}, {"modelo": "ZOE ORIGINAL", "total": 29, "skus": [{"sku": "ZOEMIDA43TXS", "cantidad": 6}, {"sku": "ZOEMIDA43TS", "cantidad": 4}, {"sku": "ZOEMIDA70TM", "cantidad": 3}, {"sku": "ZOEMIDA16TS", "cantidad": 2}, {"sku": "ZOEMIDA12TXS", "cantidad": 1}, {"sku": "ZOEMIDA12TM", "cantidad": 1}, {"sku": "ZOEMIDA43TL", "cantidad": 1}, {"sku": "ZOEMIDA34TM", "cantidad": 1}, {"sku": "ZOEMIDA43TM", "cantidad": 1}, {"sku": "ZOEMIDA16TXS", "cantidad": 1}, {"sku": "ZOEMIDA50TXS", "cantidad": 1}, {"sku": "ZOEMIDA66TXS", "cantidad": 1}, {"sku": "ZOEMIDA70TS", "cantidad": 1}, {"sku": "ZOEMIKI01T10", "cantidad": 1}, {"sku": "ZOEMIKI05T2", "cantidad": 1}, {"sku": "ZOEMIKI11T14", "cantidad": 1}, {"sku": "ZOEMIKI34T8", "cantidad": 1}, {"sku": "ZOEMIKI43T14", "cantidad": 1}], "monthly": {"agosto-2025": 2, "septiembre-2025": 0, "octubre-2025": 7, "noviembre-2025": 1, "diciembre-2025": 1, "enero-2026": 2, "febrero-2026": 0, "marzo-2026": 1, "abril-2026": 10, "mayo-2026": 5}, "colors": {"Negro": 13, "Vinotinto": 4, "Blanco": 3, "Azul Marino": 2, "Lila": 2, "Aguamarina": 1, "Amarillo Pastel": 1, "Azul Lavanda": 1, "Rojo": 1, "Verde Militar": 1}, "tallas": {"XS": 10, "S": 7, "M": 6, "14": 2, "8": 1, "2": 1, "10": 1, "L": 1}, "genero": ["DAMA", "KIDS"]}], "gender_monthly": {"CABALLERO": {"agosto-2025": 39, "septiembre-2025": 135, "octubre-2025": 396, "noviembre-2025": 128, "diciembre-2025": 140, "enero-2026": 102, "febrero-2026": 128, "marzo-2026": 381, "abril-2026": 189, "mayo-2026": 108}, "DAMA": {"agosto-2025": 32, "septiembre-2025": 111, "octubre-2025": 305, "noviembre-2025": 132, "diciembre-2025": 116, "enero-2026": 56, "febrero-2026": 148, "marzo-2026": 450, "abril-2026": 163, "mayo-2026": 110}, "KIDS": {"agosto-2025": 3, "septiembre-2025": 7, "octubre-2025": 50, "noviembre-2025": 9, "diciembre-2025": 43, "enero-2026": 7, "febrero-2026": 11, "marzo-2026": 10, "abril-2026": 8, "mayo-2026": 5}}, "top_colors": {"Negro": 1589, "Azul Rey": 1274, "Blanco": 787, "Azul Marino": 468, "Azul Lavanda": 467, "Verde Militar": 464, "Rojo": 445, "Naranja": 428, "Aguamarina": 374, "Slime": 303, "Tie Dye Mandarina": 301, "Verde Manzana": 301, "Azul Cielo": 225, "Amarillo": 209, "Gris Claro": 204}, "stock_suggestions": [{"modelo": "ACTIVE DUO", "total_vendido": 19, "meses_activos": 5, "promedio_mensual": 3.8, "stock_min": 4, "stock_max": 6, "genero": ["DAMA", "CABALLERO"], "top_color": "Blanco DUO", "top_talla": "S"}, {"modelo": "ADVANCE GEO DOMINIC", "total_vendido": 5, "meses_activos": 2, "promedio_mensual": 2.5, "stock_min": 2, "stock_max": 4, "genero": ["CABALLERO"], "top_color": "Azul Cobalto", "top_talla": "L"}, {"modelo": "ADVANCE GEO MAYA", "total_vendido": 5, "meses_activos": 2, "promedio_mensual": 2.5, "stock_min": 2, "stock_max": 4, "genero": ["DAMA"], "top_color": "Amarillo", "top_talla": "S"}, {"modelo": "ANDRE ORIGINAL", "total_vendido": 21, "meses_activos": 3, "promedio_mensual": 7.0, "stock_min": 7, "stock_max": 10, "genero": ["DAMA"], "top_color": "Amarillo Neón", "top_talla": "M"}, {"modelo": "ANDRE SPORT", "total_vendido": 2, "meses_activos": 1, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": ["DAMA"], "top_color": "Azul Rey", "top_talla": "L"}, {"modelo": "ANKLE SOCKS", "total_vendido": 8, "meses_activos": 3, "promedio_mensual": 2.7, "stock_min": 3, "stock_max": 4, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "BANDANA PET", "total_vendido": 11, "meses_activos": 5, "promedio_mensual": 2.2, "stock_min": 2, "stock_max": 3, "genero": [], "top_color": "Coral Neón", "top_talla": "M"}, {"modelo": "BASIC LINE CROP TEE", "total_vendido": 30, "meses_activos": 7, "promedio_mensual": 4.3, "stock_min": 4, "stock_max": 6, "genero": ["DAMA"], "top_color": "Black", "top_talla": "M"}, {"modelo": "BASIC LINE OVERSIZED", "total_vendido": 18, "meses_activos": 4, "promedio_mensual": 4.5, "stock_min": 4, "stock_max": 7, "genero": ["CABALLERO"], "top_color": "Ivory", "top_talla": "L"}, {"modelo": "BASIC LINE PANT", "total_vendido": 18, "meses_activos": 7, "promedio_mensual": 2.6, "stock_min": 3, "stock_max": 4, "genero": ["DAMA"], "top_color": "Black", "top_talla": "M"}, {"modelo": "BASIC LINE SHORT", "total_vendido": 10, "meses_activos": 4, "promedio_mensual": 2.5, "stock_min": 2, "stock_max": 4, "genero": ["DAMA"], "top_color": "Peanut", "top_talla": "M"}, {"modelo": "BUCKET HAT", "total_vendido": 6, "meses_activos": 3, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": [], "top_color": "Verde Pino", "top_talla": "-"}, {"modelo": "BUCKET HAT ESTAMPADO", "total_vendido": 22, "meses_activos": 8, "promedio_mensual": 2.8, "stock_min": 3, "stock_max": 4, "genero": [], "top_color": "Oceano", "top_talla": "-"}, {"modelo": "CAMO CAP", "total_vendido": 2, "meses_activos": 2, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": [], "top_color": "Azul Marino", "top_talla": "-"}, {"modelo": "CAVAPACK 35L", "total_vendido": 2, "meses_activos": 1, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": [], "top_color": "Azul", "top_talla": "-"}, {"modelo": "CITYBAG", "total_vendido": 8, "meses_activos": 1, "promedio_mensual": 8.0, "stock_min": 8, "stock_max": 12, "genero": [], "top_color": "Azul Marino", "top_talla": "-"}, {"modelo": "CLASICA ADVANCE", "total_vendido": 2, "meses_activos": 2, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": ["CABALLERO"], "top_color": "Azul", "top_talla": "L"}, {"modelo": "CLASICA ALGODON STRETCH", "total_vendido": 66, "meses_activos": 3, "promedio_mensual": 22.0, "stock_min": 22, "stock_max": 33, "genero": ["DAMA", "CABALLERO", "KIDS"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "CLASICA DAILY", "total_vendido": 1, "meses_activos": 1, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": ["DAMA"], "top_color": "Blanco", "top_talla": "M"}, {"modelo": "CLASICA DAILY 3.0", "total_vendido": 118, "meses_activos": 8, "promedio_mensual": 14.8, "stock_min": 15, "stock_max": 22, "genero": ["CABALLERO", "DAMA"], "top_color": "Blanco", "top_talla": "M"}, {"modelo": "CLASICA ORIGINAL", "total_vendido": 735, "meses_activos": 10, "promedio_mensual": 73.5, "stock_min": 74, "stock_max": 110, "genero": ["KIDS", "DAMA", "CABALLERO"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "CLASICA PADEL SPORT", "total_vendido": 2, "meses_activos": 1, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": ["CABALLERO"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "CLASICA SPORT", "total_vendido": 40, "meses_activos": 7, "promedio_mensual": 5.7, "stock_min": 6, "stock_max": 9, "genero": ["CABALLERO", "KIDS"], "top_color": "Blanco", "top_talla": "M"}, {"modelo": "CLASSIC BACKPACK", "total_vendido": 20, "meses_activos": 5, "promedio_mensual": 4.0, "stock_min": 4, "stock_max": 6, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "CLASSIC POLO", "total_vendido": 45, "meses_activos": 6, "promedio_mensual": 7.5, "stock_min": 8, "stock_max": 11, "genero": ["CABALLERO"], "top_color": "Azul Marino", "top_talla": "L"}, {"modelo": "CLÁSICA SPORT", "total_vendido": 13, "meses_activos": 4, "promedio_mensual": 3.2, "stock_min": 3, "stock_max": 5, "genero": ["DAMA"], "top_color": "Blanco", "top_talla": "XS"}, {"modelo": "CREW SOCKS", "total_vendido": 25, "meses_activos": 5, "promedio_mensual": 5.0, "stock_min": 5, "stock_max": 8, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "CUADRO BAND", "total_vendido": 3285, "meses_activos": 8, "promedio_mensual": 410.6, "stock_min": 411, "stock_max": 616, "genero": [], "top_color": "Azul Rey", "top_talla": "-"}, {"modelo": "CUADRO BAND ELASTIC", "total_vendido": 22, "meses_activos": 3, "promedio_mensual": 7.3, "stock_min": 7, "stock_max": 11, "genero": [], "top_color": "Amarillo Neón", "top_talla": "-"}, {"modelo": "CUADRO BAND VENEZUELA", "total_vendido": 279, "meses_activos": 7, "promedio_mensual": 39.9, "stock_min": 40, "stock_max": 60, "genero": [], "top_color": "-", "top_talla": "-"}, {"modelo": "CUADRO JACKET 2.0", "total_vendido": 129, "meses_activos": 6, "promedio_mensual": 21.5, "stock_min": 22, "stock_max": 32, "genero": ["DAMA", "CABALLERO"], "top_color": "AZUL POLO", "top_talla": "M"}, {"modelo": "CUADRO TAG", "total_vendido": 54, "meses_activos": 5, "promedio_mensual": 10.8, "stock_min": 11, "stock_max": 16, "genero": [], "top_color": "Colina", "top_talla": "-"}, {"modelo": "DAD CAP", "total_vendido": 13, "meses_activos": 4, "promedio_mensual": 3.2, "stock_min": 3, "stock_max": 5, "genero": [], "top_color": "Marron", "top_talla": "-"}, {"modelo": "DOMINIC BIO MOVE", "total_vendido": 21, "meses_activos": 5, "promedio_mensual": 4.2, "stock_min": 4, "stock_max": 6, "genero": ["CABALLERO"], "top_color": "Blanco", "top_talla": "S"}, {"modelo": "DRY BAG 10L", "total_vendido": 28, "meses_activos": 6, "promedio_mensual": 4.7, "stock_min": 5, "stock_max": 7, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "DRY BAG 30L", "total_vendido": 102, "meses_activos": 10, "promedio_mensual": 10.2, "stock_min": 10, "stock_max": 15, "genero": [], "top_color": "Verde Militar", "top_talla": "-"}, {"modelo": "DRY BAG 5L", "total_vendido": 50, "meses_activos": 8, "promedio_mensual": 6.2, "stock_min": 6, "stock_max": 9, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "ECO BAG", "total_vendido": 3, "meses_activos": 2, "promedio_mensual": 1.5, "stock_min": 2, "stock_max": 2, "genero": [], "top_color": "Palmeras", "top_talla": "-"}, {"modelo": "EXPLORE CAP", "total_vendido": 2, "meses_activos": 2, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": [], "top_color": "Verde Militar", "top_talla": "-"}, {"modelo": "EXPLORE PANTS", "total_vendido": 91, "meses_activos": 9, "promedio_mensual": 10.1, "stock_min": 10, "stock_max": 15, "genero": ["DAMA", "CABALLERO", "KIDS"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "EXPLORE SHORT", "total_vendido": 13, "meses_activos": 3, "promedio_mensual": 4.3, "stock_min": 4, "stock_max": 6, "genero": ["DAMA", "CABALLERO"], "top_color": "Verde Militar", "top_talla": "M"}, {"modelo": "FALDA SARA", "total_vendido": 25, "meses_activos": 5, "promedio_mensual": 5.0, "stock_min": 5, "stock_max": 8, "genero": ["DAMA"], "top_color": "Gris Claro", "top_talla": "M"}, {"modelo": "FIT CAP", "total_vendido": 21, "meses_activos": 5, "promedio_mensual": 4.2, "stock_min": 4, "stock_max": 6, "genero": [], "top_color": "Azul Marino", "top_talla": "-"}, {"modelo": "FLEX COVER", "total_vendido": 7, "meses_activos": 3, "promedio_mensual": 2.3, "stock_min": 2, "stock_max": 4, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "HAT", "total_vendido": 26, "meses_activos": 5, "promedio_mensual": 5.2, "stock_min": 5, "stock_max": 8, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "HEADBAND", "total_vendido": 44, "meses_activos": 6, "promedio_mensual": 7.3, "stock_min": 7, "stock_max": 11, "genero": [], "top_color": "Blanco", "top_talla": "-"}, {"modelo": "HELEN BIO MOVE", "total_vendido": 7, "meses_activos": 4, "promedio_mensual": 1.8, "stock_min": 2, "stock_max": 3, "genero": ["DAMA"], "top_color": "Lima", "top_talla": "M"}, {"modelo": "JACKET", "total_vendido": 198, "meses_activos": 9, "promedio_mensual": 22.0, "stock_min": 22, "stock_max": 33, "genero": ["CABALLERO", "DAMA", "KIDS"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "KID HAT", "total_vendido": 7, "meses_activos": 3, "promedio_mensual": 2.3, "stock_min": 2, "stock_max": 4, "genero": [], "top_color": "Azul Cielo", "top_talla": "-"}, {"modelo": "LANYARD", "total_vendido": 867, "meses_activos": 10, "promedio_mensual": 86.7, "stock_min": 87, "stock_max": 130, "genero": [], "top_color": "Aguamarina", "top_talla": "-"}, {"modelo": "LANYARD PRO", "total_vendido": 42, "meses_activos": 7, "promedio_mensual": 6.0, "stock_min": 6, "stock_max": 9, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "LARISA ORIGINAL", "total_vendido": 7, "meses_activos": 1, "promedio_mensual": 7.0, "stock_min": 7, "stock_max": 10, "genero": ["DAMA"], "top_color": "Azul Marino", "top_talla": "XS"}, {"modelo": "LEGGING MOVA", "total_vendido": 7, "meses_activos": 4, "promedio_mensual": 1.8, "stock_min": 2, "stock_max": 3, "genero": ["DAMA"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "LLAVERO SNAP", "total_vendido": 145, "meses_activos": 6, "promedio_mensual": 24.2, "stock_min": 24, "stock_max": 36, "genero": [], "top_color": "Verde Neon", "top_talla": "-"}, {"modelo": "MAFE ADVANCE", "total_vendido": 4, "meses_activos": 2, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": ["DAMA"], "top_color": "Gris Claro", "top_talla": "S"}, {"modelo": "MAFE ORIGINAL", "total_vendido": 303, "meses_activos": 10, "promedio_mensual": 30.3, "stock_min": 30, "stock_max": 45, "genero": ["DAMA"], "top_color": "Azul Lavanda", "top_talla": "S"}, {"modelo": "MAFE SPORT", "total_vendido": 3, "meses_activos": 1, "promedio_mensual": 3.0, "stock_min": 3, "stock_max": 4, "genero": ["DAMA"], "top_color": "Blanco", "top_talla": "L"}, {"modelo": "MANGA LARGA ALGODON STRETCH", "total_vendido": 1, "meses_activos": 1, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": ["DAMA"], "top_color": "Negro", "top_talla": "L"}, {"modelo": "MANGA LARGA DAILY", "total_vendido": 1, "meses_activos": 1, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": ["KIDS"], "top_color": "Negro", "top_talla": "14"}, {"modelo": "MAR ORIGINAL", "total_vendido": 938, "meses_activos": 10, "promedio_mensual": 93.8, "stock_min": 94, "stock_max": 141, "genero": ["DAMA", "CABALLERO", "KIDS"], "top_color": "Azul Marino", "top_talla": "M"}, {"modelo": "MAYA SPORT LITE", "total_vendido": 57, "meses_activos": 5, "promedio_mensual": 11.4, "stock_min": 11, "stock_max": 17, "genero": ["DAMA"], "top_color": "Coral Neón", "top_talla": "S"}, {"modelo": "MESH CAP", "total_vendido": 4, "meses_activos": 1, "promedio_mensual": 4.0, "stock_min": 4, "stock_max": 6, "genero": [], "top_color": "Black", "top_talla": "-"}, {"modelo": "MIA ORIGINAL", "total_vendido": 11, "meses_activos": 3, "promedio_mensual": 3.7, "stock_min": 4, "stock_max": 6, "genero": ["DAMA"], "top_color": "Negro", "top_talla": "S"}, {"modelo": "MIKA SPORT LITE", "total_vendido": 60, "meses_activos": 6, "promedio_mensual": 10.0, "stock_min": 10, "stock_max": 15, "genero": ["DAMA"], "top_color": "Coral Neón", "top_talla": "M"}, {"modelo": "MINI BAG", "total_vendido": 46, "meses_activos": 6, "promedio_mensual": 7.7, "stock_min": 8, "stock_max": 12, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "NOAH SPORT LITE", "total_vendido": 74, "meses_activos": 8, "promedio_mensual": 9.2, "stock_min": 9, "stock_max": 14, "genero": ["CABALLERO"], "top_color": "Coral Neón", "top_talla": "M"}, {"modelo": "PONCHO", "total_vendido": 10, "meses_activos": 4, "promedio_mensual": 2.5, "stock_min": 2, "stock_max": 4, "genero": [], "top_color": "Magenta", "top_talla": "-"}, {"modelo": "PONCHO ADULTO", "total_vendido": 8, "meses_activos": 4, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": [], "top_color": "AZUL", "top_talla": "-"}, {"modelo": "PRO CAP", "total_vendido": 3, "meses_activos": 2, "promedio_mensual": 1.5, "stock_min": 2, "stock_max": 2, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "REFRESH VERDE", "total_vendido": 1, "meses_activos": 1, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": [], "top_color": "REFRESH 1", "top_talla": "-"}, {"modelo": "RIO ORIGINAL", "total_vendido": 101, "meses_activos": 10, "promedio_mensual": 10.1, "stock_min": 10, "stock_max": 15, "genero": ["CABALLERO", "DAMA", "KIDS"], "top_color": "Verde Militar", "top_talla": "L"}, {"modelo": "SABRI SPORT", "total_vendido": 8, "meses_activos": 4, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": ["DAMA"], "top_color": "Blanco", "top_talla": "M"}, {"modelo": "SHORT PLAYA", "total_vendido": 40, "meses_activos": 10, "promedio_mensual": 4.0, "stock_min": 4, "stock_max": 6, "genero": ["CABALLERO", "KIDS"], "top_color": "Azul Marino", "top_talla": "L"}, {"modelo": "SHORT PLAYA ESTAMPADO", "total_vendido": 27, "meses_activos": 7, "promedio_mensual": 3.9, "stock_min": 4, "stock_max": 6, "genero": ["CABALLERO", "KIDS"], "top_color": "TUCUPIDO", "top_talla": "M"}, {"modelo": "SHORT R2", "total_vendido": 2, "meses_activos": 2, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": ["DAMA"], "top_color": "Azul Rey", "top_talla": "L"}, {"modelo": "SHORT SPORT", "total_vendido": 105, "meses_activos": 9, "promedio_mensual": 11.7, "stock_min": 12, "stock_max": 18, "genero": ["CABALLERO", "KIDS"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "SHORT SPORT R1", "total_vendido": 26, "meses_activos": 6, "promedio_mensual": 4.3, "stock_min": 4, "stock_max": 6, "genero": ["CABALLERO", "DAMA"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "SUN HAT", "total_vendido": 28, "meses_activos": 9, "promedio_mensual": 3.1, "stock_min": 3, "stock_max": 5, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "SUNNY CORD 2.0", "total_vendido": 182, "meses_activos": 6, "promedio_mensual": 30.3, "stock_min": 30, "stock_max": 46, "genero": [], "top_color": "Morado", "top_talla": "-"}, {"modelo": "TOALLA CLIP 2.0", "total_vendido": 76, "meses_activos": 9, "promedio_mensual": 8.4, "stock_min": 8, "stock_max": 13, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "TOALLA ESTAMPADA", "total_vendido": 165, "meses_activos": 10, "promedio_mensual": 16.5, "stock_min": 16, "stock_max": 25, "genero": [], "top_color": "Avila", "top_talla": "-"}, {"modelo": "TOALLA ESTAMPADA 2.0", "total_vendido": 50, "meses_activos": 5, "promedio_mensual": 10.0, "stock_min": 10, "stock_max": 15, "genero": [], "top_color": "Waves", "top_talla": "-"}, {"modelo": "TOALLA PLAYA", "total_vendido": 157, "meses_activos": 10, "promedio_mensual": 15.7, "stock_min": 16, "stock_max": 24, "genero": [], "top_color": "Azul Marino", "top_talla": "-"}, {"modelo": "TOALLA SPORT", "total_vendido": 449, "meses_activos": 10, "promedio_mensual": 44.9, "stock_min": 45, "stock_max": 67, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "TOALLA WAFFLE", "total_vendido": 1, "meses_activos": 1, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": [], "top_color": "Verde Grama", "top_talla": "-"}, {"modelo": "TOP MOVA", "total_vendido": 11, "meses_activos": 4, "promedio_mensual": 2.8, "stock_min": 3, "stock_max": 4, "genero": ["DAMA"], "top_color": "Negro", "top_talla": "M"}, {"modelo": "TOTE BAG", "total_vendido": 75, "meses_activos": 8, "promedio_mensual": 9.4, "stock_min": 9, "stock_max": 14, "genero": [], "top_color": "Gris Claro", "top_talla": "-"}, {"modelo": "TRAVEL BACKPACK", "total_vendido": 70, "meses_activos": 10, "promedio_mensual": 7.0, "stock_min": 7, "stock_max": 10, "genero": [], "top_color": "Verde Militar", "top_talla": "-"}, {"modelo": "TRAVEL BAG 18L", "total_vendido": 29, "meses_activos": 9, "promedio_mensual": 3.2, "stock_min": 3, "stock_max": 5, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "TRAVEL BAG 40L", "total_vendido": 39, "meses_activos": 8, "promedio_mensual": 4.9, "stock_min": 5, "stock_max": 7, "genero": [], "top_color": "Negro", "top_talla": "-"}, {"modelo": "UNIHOODIE", "total_vendido": 13, "meses_activos": 1, "promedio_mensual": 13.0, "stock_min": 13, "stock_max": 20, "genero": [], "top_color": "Negro", "top_talla": "L"}, {"modelo": "URBAN COTTON OVERSIZED COLOR BLOCK", "total_vendido": 3, "meses_activos": 1, "promedio_mensual": 3.0, "stock_min": 3, "stock_max": 4, "genero": ["CABALLERO"], "top_color": "Verde", "top_talla": "M"}, {"modelo": "URBAN COTTON OVERSIZED HORIZONTE", "total_vendido": 3, "meses_activos": 2, "promedio_mensual": 1.5, "stock_min": 2, "stock_max": 2, "genero": ["CABALLERO"], "top_color": "Gris", "top_talla": "L"}, {"modelo": "URBAN COTTON OVERSIZED OUTSIDE", "total_vendido": 4, "meses_activos": 3, "promedio_mensual": 1.3, "stock_min": 1, "stock_max": 2, "genero": ["CABALLERO"], "top_color": "Azul Marino", "top_talla": "L"}, {"modelo": "URBAN COTTON OVERSIZED SUNSET", "total_vendido": 3, "meses_activos": 2, "promedio_mensual": 1.5, "stock_min": 2, "stock_max": 2, "genero": ["CABALLERO"], "top_color": "Azul Marino", "top_talla": "L"}, {"modelo": "URBAN COTTON OVERSIZED VINTAGE GRIS", "total_vendido": 4, "meses_activos": 3, "promedio_mensual": 1.3, "stock_min": 1, "stock_max": 2, "genero": ["CABALLERO"], "top_color": "Verde", "top_talla": "L"}, {"modelo": "URBAN COTTON OVERSIZED VINTAGE VERDE", "total_vendido": 1, "meses_activos": 1, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": ["CABALLERO"], "top_color": "Gris", "top_talla": "L"}, {"modelo": "URBAN COTTON TOP GRAY BLOCK", "total_vendido": 3, "meses_activos": 2, "promedio_mensual": 1.5, "stock_min": 2, "stock_max": 2, "genero": ["DAMA"], "top_color": "Cereza", "top_talla": "M"}, {"modelo": "URBAN COTTON TOP SAY YES", "total_vendido": 6, "meses_activos": 3, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": ["DAMA"], "top_color": "Azul Marino", "top_talla": "S"}, {"modelo": "URBAN COTTON TOP SUNSET", "total_vendido": 2, "meses_activos": 2, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": ["DAMA"], "top_color": "Gris", "top_talla": "M"}, {"modelo": "URBAN COTTON TOP VINTAGE GRIS", "total_vendido": 7, "meses_activos": 3, "promedio_mensual": 2.3, "stock_min": 2, "stock_max": 4, "genero": ["DAMA"], "top_color": "Cereza", "top_talla": "M"}, {"modelo": "VESTIDO GEMMA", "total_vendido": 4, "meses_activos": 2, "promedio_mensual": 2.0, "stock_min": 2, "stock_max": 3, "genero": ["DAMA"], "top_color": "Azul Cielo", "top_talla": "M"}, {"modelo": "VISERA", "total_vendido": 7, "meses_activos": 1, "promedio_mensual": 7.0, "stock_min": 7, "stock_max": 10, "genero": [], "top_color": "Azul Marino", "top_talla": "-"}, {"modelo": "VIVI ORIGINAL", "total_vendido": 33, "meses_activos": 7, "promedio_mensual": 4.7, "stock_min": 5, "stock_max": 7, "genero": ["DAMA"], "top_color": "Azul Lavanda", "top_talla": "S"}, {"modelo": "ZENIT CUADRADO", "total_vendido": 1, "meses_activos": 1, "promedio_mensual": 1.0, "stock_min": 1, "stock_max": 2, "genero": [], "top_color": "Black", "top_talla": "-"}, {"modelo": "ZENIT REDONDO", "total_vendido": 7, "meses_activos": 3, "promedio_mensual": 2.3, "stock_min": 2, "stock_max": 4, "genero": [], "top_color": "Terra", "top_talla": "-"}, {"modelo": "ZOE ORIGINAL", "total_vendido": 29, "meses_activos": 8, "promedio_mensual": 3.6, "stock_min": 4, "stock_max": 5, "genero": ["DAMA", "KIDS"], "top_color": "Negro", "top_talla": "XS"}], "total_general": 10044, "total_modelos": 107, "total_skus": 1104, "total_transacciones": 3181};
+
+const MONTHS = DATA.months;
+const MONTH_LABELS = {
+  'agosto-2025':'Ago 25','septiembre-2025':'Sep 25','octubre-2025':'Oct 25',
+  'noviembre-2025':'Nov 25','diciembre-2025':'Dic 25','enero-2026':'Ene 26',
+  'febrero-2026':'Feb 26','marzo-2026':'Mar 26','abril-2026':'Abr 26','mayo-2026':'May 26'
+};
+const MONTH_FULL = {
+  'agosto-2025':'Ago 2025','septiembre-2025':'Sep 2025','octubre-2025':'Oct 2025',
+  'noviembre-2025':'Nov 2025','diciembre-2025':'Dic 2025','enero-2026':'Ene 2026',
+  'febrero-2026':'Feb 2026','marzo-2026':'Mar 2026','abril-2026':'Abr 2026','mayo-2026':'May 2026'
+};
+
+// ─── STATE ───
+let selectedMonths = new Set(['ALL']);
+let sortField = 'total', sortAsc = false;
+let openDrill = null;
+let chartObj = null;
+
+// ─── THEME ───
+function toggleTheme(){
+  const d = document.documentElement;
+  const dark = d.getAttribute('data-theme') === 'dark';
+  d.setAttribute('data-theme', dark ? '' : 'dark');
+  document.getElementById('thbtn').textContent = dark ? '🌙 Oscuro' : '☀️ Claro';
+  rebuildChart();
+}
+
+// ─── TABS ───
+function goTab(id, el){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('sec-'+id).classList.add('on');
+  el.classList.add('on');
+  if(id==='stock') renderStock();
+}
+
+// ─── MONTH PILLS ───
+function initMonthPills(){
+  const c = document.getElementById('month-pills');
+  MONTHS.forEach(m=>{
+    const d = document.createElement('div');
+    d.className = 'mpill';
+    d.dataset.m = m;
+    d.textContent = MONTH_LABELS[m];
+    d.onclick = () => toggleMonth(m, d);
+    c.appendChild(d);
+  });
+}
+
+function toggleMonth(m, el){
+  if(m==='ALL'){
+    selectedMonths.clear();
+    selectedMonths.add('ALL');
+    document.querySelectorAll('.mpill').forEach(p=>{
+      p.classList.toggle('on', p.dataset.m==='ALL');
+    });
+  } else {
+    if(selectedMonths.has('ALL')){
+      selectedMonths.clear();
+      document.querySelector('.mpill.all').classList.remove('on');
+    }
+    if(selectedMonths.has(m)){
+      selectedMonths.delete(m);
+      el.classList.remove('on');
+    } else {
+      selectedMonths.add(m);
+      el.classList.add('on');
+    }
+    if(selectedMonths.size===0){
+      selectedMonths.add('ALL');
+      document.querySelector('.mpill.all').classList.add('on');
+    }
+  }
+  updateAll();
+}
+
+function clearMonths(){
+  selectedMonths.clear();
+  selectedMonths.add('ALL');
+  document.querySelectorAll('.mpill').forEach(p=>{
+    p.classList.toggle('on', p.dataset.m==='ALL');
+  });
+  updateAll();
+}
+
+function getActiveMths(){
+  if(selectedMonths.has('ALL')) return MONTHS;
+  return MONTHS.filter(m=>selectedMonths.has(m));
+}
+
+// ─── CHART ───
+function rebuildChart(){
+  const active = getActiveMths();
+  const labels = active.map(m=>MONTH_LABELS[m]);
+  const vals = active.map(m=>DATA.monthly_sales[m]||0);
+  const dark = document.documentElement.getAttribute('data-theme')==='dark';
+  const gridC = dark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+  const txtC = dark ? '#5a7a9a' : '#6080a0';
+  const mx = Math.max(...vals);
+
+  if(chartObj) chartObj.destroy();
+  const ctx = document.getElementById('ch-monthly').getContext('2d');
+  chartObj = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{
+        label:'Unidades vendidas',
+        data: vals,
+        backgroundColor: active.map(m=>{
+          const isSel = !selectedMonths.has('ALL') && selectedMonths.has(m);
+          const isAll = selectedMonths.has('ALL');
+          const val = DATA.monthly_sales[m]||0;
+          if(!isAll && !isSel) return 'rgba(124,58,237,.18)';
+          return val===mx ? 'rgba(124,58,237,.92)' : 'rgba(124,58,237,.5)';
+        }),
+        borderColor: active.map(m=>{
+          const isSel = !selectedMonths.has('ALL') && selectedMonths.has(m);
+          const isAll = selectedMonths.has('ALL');
+          return (isAll||isSel) ? 'rgba(124,58,237,.95)' : 'rgba(124,58,237,.2)';
+        }),
+        borderWidth: 1.5,
+        borderRadius: 5,
+        borderSkipped: false,
+        hoverBackgroundColor: 'rgba(124,58,237,.9)',
+        hoverBorderColor: '#7c3aed',
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      cursor: 'pointer',
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          callbacks:{
+            label: ctx=>`${ctx.parsed.y.toLocaleString()} und`,
+            afterLabel: ()=>'Clic para filtrar por este mes'
+          },
+          backgroundColor: dark ? '#1a2233' : '#0f2340',
+          titleColor:'#fff', bodyColor:'#a0c8e8',
+          borderColor:'rgba(124,58,237,.4)', borderWidth:1
+        }
+      },
+      scales:{
+        x:{grid:{color:gridC}, ticks:{color:txtC, font:{size:10}}},
+        y:{grid:{color:gridC}, ticks:{color:txtC, font:{size:10}, callback:v=>v.toLocaleString()}, beginAtZero:true}
+      },
+      onClick(evt, elements){
+        if(!elements.length) return;
+        const idx = elements[0].index;
+        const clickedMonth = active[idx];
+        const pill = document.querySelector(`.mpill[data-m="${clickedMonth}"]`);
+        if(pill) toggleMonth(clickedMonth, pill);
+      },
+      onHover(evt){ evt.native.target.style.cursor = 'pointer'; }
+    }
+  });
+
+  // Update subtitle
+  const total = vals.reduce((a,b)=>a+b,0);
+  const isFiltered = !selectedMonths.has('ALL');
+  document.getElementById('chart-sub').textContent =
+    `${total.toLocaleString()} unidades · ${!isFiltered ? 'Ago 2025 – May 2026' : active.map(m=>MONTH_FULL[m]).join(', ')} · Clic en barra para filtrar`;
+}
+
+// ─── KPI UPDATE ───
+function updateKPIs(){
+  const active = getActiveMths();
+  let total = 0;
+  active.forEach(m=>{ total += DATA.monthly_sales[m]||0; });
+
+  // best month in selection
+  let bestM = active.reduce((a,b)=>(DATA.monthly_sales[a]||0)>(DATA.monthly_sales[b]||0)?a:b, active[0]);
+
+  // model totals for filtered months
+  let modelTotals = DATA.models.map(mo=>{
+    const t = active.reduce((a,m)=>a+(mo.monthly[m]||0),0);
+    return {modelo:mo.modelo, total:t};
+  }).filter(x=>x.total>0);
+  modelTotals.sort((a,b)=>b.total-a.total);
+
+  document.getElementById('kpi-total').textContent = total.toLocaleString();
+  document.getElementById('kpi-modelos').textContent = modelTotals.length;
+  if(modelTotals.length){
+    document.getElementById('kpi-lider').textContent = modelTotals[0].modelo;
+    document.getElementById('kpi-lider-sub').textContent = `${modelTotals[0].total.toLocaleString()} und vendidas`;
+  }
+  document.getElementById('kpi-mes').textContent = MONTH_FULL[bestM]||bestM;
+  document.getElementById('kpi-mes-sub').textContent = `${(DATA.monthly_sales[bestM]||0).toLocaleString()} und · pico web`;
+}
+
+// ─── GENERO BADGE ───
+function genderBadges(gs){
+  if(!gs||!gs.length) return '<span class="gb" style="background:#f1f5f9;color:#64748b">N/A</span>';
+  return gs.map(g=>{
+    if(g==='CABALLERO') return '<span class="gb cab">CAB</span>';
+    if(g==='DAMA') return '<span class="gb dam">DAMA</span>';
+    if(g==='KIDS') return '<span class="gb kid">KIDS</span>';
+    return '';
+  }).filter(Boolean).join(' ');
+}
+
+// ─── COLOR DOT ───
+const COLOR_MAP = {
+  'Negro':'#222','Blanco':'#f8f8f0','Rojo':'#dc2626','Azul Marino':'#1e3a5f',
+  'Azul Turquesa':'#06b6d4','Verde Militar':'#4d7c0f','Verde Grama':'#16a34a',
+  'Kaki':'#a16207','Vinotinto':'#881337','Magenta':'#c026d3','Morado':'#7c3aed',
+  'Gris Claro':'#d1d5db','Gris Oscuro':'#374151','Gris Azulado':'#475569',
+  'Amarillo Pastel':'#fde68a','Amarillo Neón':'#facc15',
+  'Lavanda DUO':'#c4b5fd','Azul Cobalto':'#2563eb','Roraima':'#0ea5e9',
+  'Camu':'#84cc16','Avila':'#65a30d','Bitacora':'#0f766e',
+};
+function colorDot(name){
+  const c = COLOR_MAP[name] || '#94a3b8';
+  const light = ['Blanco','Gris Claro','Amarillo Pastel','Lavanda DUO','Amarillo Neón'].includes(name);
+  return `<span class="cdot" style="background:${c};${light?'border-color:#ccc':''}"></span>`;
+}
+
+// ─── MINI TREND ───
+function miniTrend(mo, active){
+  const vals = active.map(m=>mo.monthly[m]||0);
+  const mx = Math.max(...vals, 1);
+  return `<div class="trend-bar">${vals.map(v=>{
+    const h = Math.max(2, Math.round((v/mx)*26));
+    return `<div class="tb-bar" style="height:${h}px;opacity:${v>0?.7:.15}" title="${v} und"></div>`;
+  }).join('')}</div>`;
+}
+
+// ─── MINI BAR ───
+function miniBar(val, max){
+  const pct = max>0 ? Math.round((val/max)*100) : 0;
+  return `<div class="mb"><div class="mbg"><div class="mbl" style="width:${pct}%;background:linear-gradient(90deg,var(--web),var(--a2))"></div></div><span class="mbv">${val.toLocaleString()}</span></div>`;
+}
+
+// ─── MODELS TABLE ───
+function renderTable(){
+  const active = getActiveMths();
+  const srch = document.getElementById('srch-modelo').value.toLowerCase();
+  const genF = document.getElementById('sel-genero').value;
+
+  let rows = DATA.models.map(mo=>{
+    const t = active.reduce((a,m)=>a+(mo.monthly[m]||0),0);
+    return {...mo, filteredTotal: t};
+  });
+
+  // filter
+  rows = rows.filter(mo=>{
+    if(mo.filteredTotal===0) return false;
+    if(srch && !mo.modelo.toLowerCase().includes(srch)) return false;
+    if(genF!=='ALL'){
+      if(genF==='NA') { if(mo.genero && mo.genero.length>0) return false; }
+      else { if(!mo.genero || !mo.genero.includes(genF)) return false; }
+    }
+    return true;
+  });
+
+  // sort
+  rows.sort((a,b)=>{
+    let va = sortField==='total' ? a.filteredTotal : a.modelo;
+    let vb = sortField==='total' ? b.filteredTotal : b.modelo;
+    if(typeof va==='string') return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    return sortAsc ? va-vb : vb-va;
+  });
+
+  document.getElementById('cnt-modelos').textContent = `${rows.length} modelos`;
+  const max = rows.length ? rows[0].filteredTotal : 1;
+
+  let html = '';
+  rows.forEach((mo,i)=>{
+    const rank = i===0?`<span class="rank r1">1</span>`:i===1?`<span class="rank r2">2</span>`:i===2?`<span class="rank r3">3</span>`:`<span class="rank rn">${i+1}</span>`;
+    const topColor = mo.colors && Object.keys(mo.colors).length ? Object.keys(mo.colors)[0] : '—';
+    const topTalla = mo.tallas && Object.keys(mo.tallas).length ? Object.keys(mo.tallas)[0] : '—';
+    const nSku = mo.skus.length;
+    const drId = `dr-${i}`;
+
+    html += `<tr>
+      <td>${rank}</td>
+      <td><strong>${mo.modelo}</strong></td>
+      <td class="r"><span class="mono" style="color:var(--tx3)">${nSku}</span></td>
+      <td><div class="gbadge">${genderBadges(mo.genero)}</div></td>
+      <td class="r">${miniBar(mo.filteredTotal, max)}</td>
+      <td>${miniTrend(mo, active)}</td>
+      <td>${topColor!=='—'?colorDot(topColor):''}${topColor}</td>
+      <td><span class="mono">${topTalla}</span></td>
+      <td><button class="dr-btn" id="btn-${drId}" onclick="toggleDrill('${drId}',${i})">▶ SKUs</button></td>
+    </tr>
+    <tr class="dr-row" id="${drId}">
+      <td class="dr-cell" colspan="9">
+        <div class="dr-inner">
+          <div style="font-size:10.5px;font-weight:600;color:var(--web);margin-bottom:8px">SKUs · ${mo.modelo} · ${mo.filteredTotal.toLocaleString()} und</div>
+          <div class="dr-sc">
+            <table class="dr-tbl">
+              <thead><tr>
+                <th>#</th><th>SKU</th><th class="r">Unidades</th><th>Barra</th>
+              </tr></thead>
+              <tbody>${buildSkuRows(mo, active)}</tbody>
+            </table>
+          </div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:10.5px;color:var(--tx3)">
+            ${mo.colors&&Object.keys(mo.colors).length ? `<div><strong style="color:var(--tx2)">Colores:</strong> ${Object.entries(mo.colors).slice(0,5).map(([c,v])=>`${colorDot(c)}${c} (${v})`).join(' · ')}</div>` : ''}
+            ${mo.tallas&&Object.keys(mo.tallas).length ? `<div><strong style="color:var(--tx2)">Tallas:</strong> ${Object.entries(mo.tallas).slice(0,8).map(([t,v])=>`${t}:${v}`).join(' · ')}</div>` : ''}
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  document.getElementById('models-body').innerHTML = html || `<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--tx3)">No hay modelos para los filtros aplicados</td></tr>`;
+}
+
+function buildSkuStockRows(mo){
+  // Per-SKU min/max: use model's meses_activos as divisor
+  const stockSug = DATA.stock_suggestions.find(s=>s.modelo===mo.modelo);
+  const mesesActivos = stockSug ? stockSug.meses_activos : 1;
+  const maxSkuQ = mo.skus.length ? mo.skus[0].cantidad : 1;
+  return mo.skus.map((s,i)=>{
+    const avg = s.cantidad / mesesActivos;
+    const skuMin = Math.max(1, Math.round(avg));
+    const skuMax = Math.max(2, Math.round(avg * 1.5));
+    const pct = maxSkuQ>0 ? Math.round((s.cantidad/maxSkuQ)*100) : 0;
+    return `<tr>
+      <td style="color:var(--tx3);font-size:10px">${i+1}</td>
+      <td><span class="mono">${s.sku}</span></td>
+      <td class="r"><strong>${s.cantidad.toLocaleString()}</strong></td>
+      <td style="min-width:80px"><div class="mb"><div class="mbg"><div class="mbl" style="width:${pct}%;background:var(--web)"></div></div></div></td>
+      <td class="r"><span style="color:var(--ex);font-weight:700;font-size:11px">▲ ${skuMin}</span></td>
+      <td class="r"><span style="color:var(--ok);font-weight:700;font-size:11px">◆ ${skuMax}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function buildSkuRows(mo, active){
+  // recalc sku totals for active months - we use overall SKU data since we don't have monthly per SKU
+  // use the sku list from model directly (total period)
+  const maxSkuQ = mo.skus.length ? mo.skus[0].cantidad : 1;
+  return mo.skus.map((s,i)=>{
+    const pct = maxSkuQ>0 ? Math.round((s.cantidad/maxSkuQ)*100) : 0;
+    return `<tr>
+      <td style="color:var(--tx3);font-size:10px">${i+1}</td>
+      <td><span class="mono">${s.sku}</span></td>
+      <td class="r"><strong>${s.cantidad.toLocaleString()}</strong></td>
+      <td><div class="mb"><div class="mbg"><div class="mbl" style="width:${pct}%;background:var(--web)"></div></div></div></td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleDrill(id, idx){
+  const row = document.getElementById(id);
+  const btn = document.getElementById('btn-'+id);
+  const isOpen = row.classList.contains('on');
+  // close all
+  document.querySelectorAll('.dr-row.on').forEach(r=>r.classList.remove('on'));
+  document.querySelectorAll('.dr-btn.on').forEach(b=>{b.classList.remove('on');b.textContent='▶ SKUs';});
+  if(!isOpen){
+    row.classList.add('on');
+    btn.classList.add('on');
+    btn.textContent='▼ Cerrar';
+  }
+}
+
+function toggleStockDrill(id, modelo){
+  const row = document.getElementById(id);
+  const btn = document.getElementById('btn-'+id);
+  const isOpen = row.classList.contains('on');
+  document.querySelectorAll('[id^="stk-dr-"].dr-row.on').forEach(r=>r.classList.remove('on'));
+  document.querySelectorAll('[id^="btn-stk-dr-"].dr-btn.on').forEach(b=>{b.classList.remove('on');b.textContent='▶ SKUs';});
+  if(!isOpen){
+    row.classList.add('on');
+    btn.classList.add('on');
+    btn.textContent='▼ Cerrar';
+  }
+}
+
+function sortBy(field){
+  if(sortField===field) sortAsc=!sortAsc;
+  else { sortField=field; sortAsc=false; }
+  document.querySelectorAll('.sarr').forEach(s=>s.parentElement.classList.remove('sorted'));
+  const el = document.getElementById('sarr-'+field);
+  if(el){ el.textContent = sortAsc?'▲':'▼'; el.parentElement.classList.add('sorted'); }
+  renderTable();
+}
+
+// ─── STOCK TABLE ───
+function renderStock(){
+  const srch = document.getElementById('srch-stock').value.toLowerCase();
+  const genF = document.getElementById('sel-stock-genero').value;
+  const sortS = document.getElementById('sel-stock-sort').value;
+
+  let rows = [...DATA.stock_suggestions].filter(s=>{
+    if(srch && !s.modelo.toLowerCase().includes(srch)) return false;
+    if(genF!=='ALL' && (!s.genero || !s.genero.includes(genF))) return false;
+    return true;
+  });
+
+  if(sortS==='total') rows.sort((a,b)=>b.total_vendido-a.total_vendido);
+  else if(sortS==='avg') rows.sort((a,b)=>b.promedio_mensual-a.promedio_mensual);
+  else rows.sort((a,b)=>a.modelo.localeCompare(b.modelo));
+
+  document.getElementById('cnt-stock').textContent = `${rows.length} modelos`;
+
+  const minTotal = rows.reduce((a,b)=>a+b.stock_min,0);
+  const maxTotal = rows.reduce((a,b)=>a+b.stock_max,0);
+  document.getElementById('stk-min-total').textContent = minTotal.toLocaleString();
+  document.getElementById('stk-max-total').textContent = maxTotal.toLocaleString();
+
+  const maxAvg = rows.length ? rows.reduce((a,b)=>Math.max(a,b.promedio_mensual),0) : 1;
+
+  let html = '';
+  rows.forEach((s,i)=>{
+    const rank = i===0?`<span class="rank r1">1</span>`:i===1?`<span class="rank r2">2</span>`:i===2?`<span class="rank r3">3</span>`:`<span class="rank rn">${i+1}</span>`;
+    const pct = maxAvg>0 ? Math.round((s.promedio_mensual/maxAvg)*100) : 0;
+    const mo = DATA.models.find(m=>m.modelo===s.modelo);
+    const trendHtml = mo ? miniTrend(mo, MONTHS) : '';
+    const nSku = mo ? mo.skus.length : 0;
+    const drId = `stk-dr-${i}`;
+
+    html += `<tr>
+      <td>${rank}</td>
+      <td><strong>${s.modelo}</strong></td>
+      <td><div class="gbadge">${genderBadges(s.genero)}</div></td>
+      <td class="r"><strong>${s.total_vendido.toLocaleString()}</strong></td>
+      <td class="r">${s.meses_activos}/9</td>
+      <td class="r"><div class="mb"><div class="mbg"><div class="mbl" style="width:${pct}%;background:var(--web)"></div></div><span class="mbv">${s.promedio_mensual}</span></div></td>
+      <td class="r"><span class="stock-level sl-min">▲ ${s.stock_min.toLocaleString()}</span></td>
+      <td class="r"><span class="stock-level sl-max">◆ ${s.stock_max.toLocaleString()}</span></td>
+      <td>${s.top_color!=='-'?colorDot(s.top_color):''}${s.top_color}</td>
+      <td><span class="mono">${s.top_talla}</span></td>
+      <td>${trendHtml}</td>
+      <td><button class="dr-btn" id="btn-${drId}" onclick="toggleStockDrill('${drId}','${s.modelo.replace(/'/g,"\'")}')">▶ SKUs</button></td>
+    </tr>
+    <tr class="dr-row" id="${drId}">
+      <td class="dr-cell" colspan="12">
+        <div class="dr-inner">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div style="font-size:10.5px;font-weight:600;color:var(--web)">SKUs · ${s.modelo} · ${nSku} referencias</div>
+            <div style="font-size:9.5px;color:var(--tx3)">Stock Mín <strong style="color:var(--ex)">▲${s.stock_min}</strong> · Stock Máx <strong style="color:var(--ok)">◆${s.stock_max}</strong> · Prom/mes ${s.promedio_mensual}</div>
+          </div>
+          <div class="dr-sc">
+            <table class="dr-tbl">
+              <thead><tr>
+                <th>#</th><th>SKU</th><th class="r">Und Vendidas</th><th>Barra</th><th class="r">Stock Mín</th><th class="r">Stock Máx</th>
+              </tr></thead>
+              <tbody>${mo ? buildSkuStockRows(mo) : '<tr><td colspan=6>Sin datos</td></tr>'}</tbody>
+            </table>
+          </div>
+          ${mo && mo.colors && Object.keys(mo.colors).length ? `<div style="margin-top:10px;font-size:10.5px;color:var(--tx3)"><strong style="color:var(--tx2)">Colores:</strong> ${Object.entries(mo.colors).slice(0,6).map(([c,v])=>colorDot(c)+c+' ('+v+')').join(' · ')}</div>` : ''}
+          ${mo && mo.tallas && Object.keys(mo.tallas).length ? `<div style="margin-top:5px;font-size:10.5px;color:var(--tx3)"><strong style="color:var(--tx2)">Tallas:</strong> ${Object.entries(mo.tallas).slice(0,8).map(([t,v])=>t+':'+v).join(' · ')}</div>` : ''}
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  document.getElementById('stock-body').innerHTML = html || `<tr><td colspan="11" style="text-align:center;padding:24px;color:var(--tx3)">No hay modelos</td></tr>`;
+}
+
+// ─── MAIN UPDATE ───
+function updateAll(){
+  rebuildChart();
+  updateKPIs();
+  renderTable();
+}
+
+// ─── INIT ───
+window.onload = function(){
+  initMonthPills();
+  updateAll();
+  renderStock();
+};
+</script>
+
+</body>
+</html>
